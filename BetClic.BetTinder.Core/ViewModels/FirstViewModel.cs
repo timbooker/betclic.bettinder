@@ -3,6 +3,10 @@
 //    Defines the FirstViewModel type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
+using BetClic.BetTinder.Core.Services;
+
 namespace BetClic.BetTinder.Core.ViewModels
 {
     using System.Windows.Input;
@@ -13,6 +17,8 @@ namespace BetClic.BetTinder.Core.ViewModels
     /// </summary>
     public class FirstViewModel : BaseViewModel
     {
+        private readonly IProposedBetsService _proposedBetsService;
+
         /// <summary>
         /// Backing field for my property.
         /// </summary>
@@ -23,13 +29,19 @@ namespace BetClic.BetTinder.Core.ViewModels
         /// </summary>
         private MvxCommand myCommand;
 
+        public FirstViewModel(IProposedBetsService proposedBetsService)
+        {
+            _proposedBetsService = proposedBetsService;
+            
+        }
+
         /// <summary>
         /// Gets or sets my property.
         /// </summary>
-        public string MyProperty
+        public string BetName
         {
-            get { return this.myProperty; }
-            set { this.SetProperty(ref this.myProperty, value, () => this.MyProperty); }
+            get { return _proposedBetsService.GetBets().First().Name; }
+            set { this.SetProperty(ref this.myProperty, value, () => this.BetName); }
         }
 
         /// <summary>
