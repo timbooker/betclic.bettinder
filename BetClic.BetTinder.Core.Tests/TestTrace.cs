@@ -3,6 +3,7 @@
 //    Defines the TestTrace type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace BetClic.BetTinder.Core.Tests
 {
     using System;

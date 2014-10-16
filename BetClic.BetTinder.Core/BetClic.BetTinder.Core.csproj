@@ -35,6 +35,9 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="Entities\Message.cs" />
+    <Compile Include="Entities\Bet.cs" />
+    <Compile Include="Services\IProposedBetsService.cs" />
+    <Compile Include="Services\ProposedBetsService.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\FirstViewModel.cs" />
   </ItemGroup>
@@ -58,6 +61,7 @@
   <ItemGroup>
     <Content Include="ToDo-MvvmCross\_ Core.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

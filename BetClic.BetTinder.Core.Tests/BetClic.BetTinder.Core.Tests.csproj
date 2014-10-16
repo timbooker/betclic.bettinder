@@ -64,6 +64,7 @@
     <Compile Include="BaseTest.cs" />
     <Compile Include="Mocks\MockDispatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ProposedBetServiceTests.cs" />
     <Compile Include="TestTrace.cs" />
   </ItemGroup>
   <ItemGroup>
