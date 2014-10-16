@@ -1,0 +1,9 @@
+C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.Core\obj\Debug\BetClic.BetTinder.Core.csprojResolveAssemblyReference.cache
+C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.Core\bin\Debug\BetClic.BetTinder.Core.dll
+C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.Core\bin\Debug\BetClic.BetTinder.Core.pdb
+C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.Core\bin\Debug\Cirrious.CrossCore.dll
+C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.Core\bin\Debug\Cirrious.MvvmCross.dll
+C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.Core\bin\Debug\Cirrious.MvvmCross.Localization.dll
+C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.Core\bin\Debug\Cirrious.MvvmCross.Plugins.Messenger.dll
+C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.Core\obj\Debug\BetClic.BetTinder.Core.dll
+C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.Core\obj\Debug\BetClic.BetTinder.Core.pdb
