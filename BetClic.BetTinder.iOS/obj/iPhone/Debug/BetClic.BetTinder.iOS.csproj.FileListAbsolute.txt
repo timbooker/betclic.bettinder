@@ -15,3 +15,4 @@ C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.iOS\bin\iPhone\Debug\
 C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.iOS\bin\iPhone\Debug\BetClic.BetTinder.Core.pdb
 C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.iOS\obj\iPhone\Debug\IosTemplate.exe
 C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.iOS\obj\iPhone\Debug\IosTemplate.pdb
+C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.iOS\bin\iPhone\Debug\BetClic.BetTinder.Core.dll.mdb

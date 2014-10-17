@@ -48,7 +48,7 @@ namespace BetClic.BetTinder.Core.ViewModels
         /// Note the ViewModel inside of ShowViewModel needs to change!
         /// </para>
         /// </summary>
-        public ICommand MyCommand
+        public ICommand AcceptBet
         {
             get { return this.myCommand ?? (this.myCommand = new MvxCommand(this.Show)); }
         }
@@ -58,7 +58,12 @@ namespace BetClic.BetTinder.Core.ViewModels
         /// </summary>
         public void Show()
         {
-            this.ShowViewModel<FirstViewModel>();
+            // validate bet
+            BetName += " Some Value";
+            // send to db
+
+            // show 'bet accepted viewmodel'
+           // this.ShowViewModel<FirstViewModel>();
         }
 
         

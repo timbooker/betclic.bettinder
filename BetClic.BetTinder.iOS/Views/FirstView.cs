@@ -36,12 +36,17 @@ namespace BetClic.BetTinder.iOS.Views
             UITextField uiTextField = new UITextField(new RectangleF(10, 50, 300, 40));
             View.AddSubview(uiTextField);
 
+            var button = new UIButton(new RectangleF(10, 100, 300, 40));
+            button.TitleLabel.Text = "click me";
+            View.AddSubview(button);
+
             var set = this.CreateBindingSet<FirstView, FirstViewModel>();
             set.Bind(uiLabel).To(vm => vm.BetName);
+            set.Bind(button).To(vm => vm.AcceptBet);
             set.Bind(uiTextField).To(vm => vm.BetName);
             set.Apply();
 
-            UITapGestureRecognizer tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());
+            var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());
             View.AddGestureRecognizer(tap);
         }
     }
