@@ -20,11 +20,6 @@ namespace BetClic.BetTinder.Core.ViewModels
         private readonly IProposedBetsService _proposedBetsService;
 
         /// <summary>
-        /// Backing field for my property.
-        /// </summary>
-        private string myProperty = "Mvx Ninja Coder!";
-
-        /// <summary>
         ///  Backing field for my command.
         /// </summary>
         private MvxCommand myCommand;
@@ -32,16 +27,18 @@ namespace BetClic.BetTinder.Core.ViewModels
         public FirstViewModel(IProposedBetsService proposedBetsService)
         {
             _proposedBetsService = proposedBetsService;
-            
+            _betName = _proposedBetsService.GetBets().First().Name;
+
         }
 
+        private string _betName;
         /// <summary>
         /// Gets or sets my property.
         /// </summary>
         public string BetName
         {
-            get { return _proposedBetsService.GetBets().First().Name; }
-            set { this.SetProperty(ref this.myProperty, value, () => this.BetName); }
+            get { return _betName; }
+            set { this.SetProperty(ref this._betName, value, () => this.BetName); }
         }
 
         /// <summary>
