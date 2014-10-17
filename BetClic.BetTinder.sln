@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		NinjaReadMe.txt = NinjaReadMe.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetClic.BetTinder.WindowsPhone", "..\..\BetClic.BetTinder\BetClic.BetTinder.WindowsPhone\BetClic.BetTinder.WindowsPhone.csproj", "{20C82258-D3E4-429A-AEE9-51DD6317BC90}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetClic.BetTinder.WindowsPhone", "BetClic.BetTinder.WindowsPhone\BetClic.BetTinder.WindowsPhone.csproj", "{20C82258-D3E4-429A-AEE9-51DD6317BC90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
