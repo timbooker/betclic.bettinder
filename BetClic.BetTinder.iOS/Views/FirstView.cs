@@ -4,6 +4,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.CoreGraphics;
 
@@ -26,6 +27,7 @@ namespace BetClic.BetTinder.iOS.Views
         private UIImageView _mainImage;
         private UIRotationGestureRecognizer _rotationGestureRecognizer;
         private UIPanGestureRecognizer _panGesture;
+
 
         /// <summary>
         /// Views the did load.
@@ -50,7 +52,7 @@ namespace BetClic.BetTinder.iOS.Views
                 _mainImage = new UIImageView(image) { Frame = new RectangleF(100, 100, 150, 150) };
                 _mainImage.UserInteractionEnabled = true;
                 View.AddSubview(_mainImage);
-            };
+            }
 
             float r = 0;
             _rotationGestureRecognizer = new UIRotationGestureRecognizer(x =>
@@ -101,9 +103,12 @@ namespace BetClic.BetTinder.iOS.Views
                     dx = 0;
                     dy = 0;
 
-                    if (p0.X > 600)
+                    if (p0.X > 100)
                     {
-                        // add to accepted bets and change vm
+                        // awkward, but required to break it a little to get the goodness out
+                        var vm = ViewModel as FirstViewModel;
+                        if (vm != null) vm.AcceptBetCommand();
+                        
                     }
                     if (p0.X < 100)
                     {
@@ -117,14 +122,9 @@ namespace BetClic.BetTinder.iOS.Views
             _mainImage.AddGestureRecognizer(_panGesture);
             _mainImage.AddGestureRecognizer(_rotationGestureRecognizer);
 
-            var button = new UIButton(new RectangleF(10, 100, 300, 40));
-            button.TitleLabel.Text = "click me";
-            View.AddSubview(button);
-
             var set = this.CreateBindingSet<FirstView, FirstViewModel>();
-            set.Bind(uiLabel).To(vm => vm.Bet);
-            set.Bind(button).To(vm => vm.AcceptBet);
-            set.Bind(uiTextField).To(vm => vm.Bet);
+            set.Bind(uiLabel).To(vm => vm.Bet.Name);
+            set.Bind(uiTextField).To(vm => vm.Bet.Odds);
             set.Apply();
 
             var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());

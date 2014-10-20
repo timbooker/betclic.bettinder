@@ -28,7 +28,9 @@ namespace BetClic.BetTinder.Core.ViewModels
         public FirstViewModel(IProposedBetsService proposedBetsService)
         {
             _proposedBetsService = proposedBetsService;
-            _bet = _proposedBetsService.GetBets().First();
+
+            if (_bet == null)
+                _bet = _proposedBetsService.GetNextBet();
 
         }
 
@@ -62,7 +64,10 @@ namespace BetClic.BetTinder.Core.ViewModels
         public void AcceptBetCommand()
         {
             // validate bet
-            Bet = _proposedBetsService.GetBets().First();
+            var bet = _proposedBetsService.GetNextBet();
+            bet.Name += "Accepted Bet";
+
+            Bet = bet;
 
             // mimicks sending to server sort of kinda maybe
             //if (PluginLoader.Instance.SendMessage("dsadjsalkd"))
@@ -71,7 +76,7 @@ namespace BetClic.BetTinder.Core.ViewModels
             //    // bet object instantiation
             //    // await _propose...
             //    // AccountTotal -= Bet.BetValue
-            //    Bet = _proposedBetsService.GetBets().First().Name;
+            //    Bet = _proposedBetsService.GetNextBet().First().Name;
             //}
             //else
             //{
@@ -82,7 +87,7 @@ namespace BetClic.BetTinder.Core.ViewModels
 
         public void RejectBetCommand()
         {
-            Bet = _proposedBetsService.GetBets().First();
+            // Bet = _proposedBetsService.GetNextBet().First();
         }
     }
 }

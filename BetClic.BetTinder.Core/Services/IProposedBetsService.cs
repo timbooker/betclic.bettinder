@@ -7,6 +7,6 @@ namespace BetClic.BetTinder.Core.Services
 {
     public interface IProposedBetsService
     {
-        IEnumerable<Bet> GetBets();
+        Bet GetNextBet();
     }
 }

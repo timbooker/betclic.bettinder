@@ -14,11 +14,10 @@ namespace BetClic.BetTinder.Core.Tests
             var proposedBetService = new ProposedBetsService();
 
             // act
-            var result = proposedBetService.GetBets();
+            var result = proposedBetService.GetNextBet();
 
             // then 
-            Assert.That(result.Count(), Is.EqualTo(10));
-            Assert.That(result.First().Name, Is.Not.Empty);
+            Assert.That(result.Name, Is.Not.Empty);
         }
 
     }
