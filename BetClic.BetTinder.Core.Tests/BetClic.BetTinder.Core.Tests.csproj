@@ -49,16 +49,14 @@
     <Reference Include="Cirrious.MvvmCross.Wpf">
       <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.2.1\lib\net45\Cirrious.MvvmCross.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Windows" />
     <Reference Include="Moq">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\Moq.dll</HintPath>
+      <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Windows" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseTest.cs" />
