@@ -6,6 +6,7 @@
 
 using System.Linq;
 using BetClic.BetTinder.Core.Services;
+using Cirrious.MvvmCross.Plugins.Messenger;
 
 namespace BetClic.BetTinder.Core.ViewModels
 {
@@ -27,19 +28,21 @@ namespace BetClic.BetTinder.Core.ViewModels
         public FirstViewModel(IProposedBetsService proposedBetsService)
         {
             _proposedBetsService = proposedBetsService;
-            _betName = _proposedBetsService.GetBets().First().Name;
+            _bet = _proposedBetsService.GetBets().First();
 
         }
 
-        private string _betName;
+        private Bet _bet;
         /// <summary>
         /// Gets or sets my property.
         /// </summary>
-        public string BetName
+        public Bet Bet
         {
-            get { return _betName; }
-            set { this.SetProperty(ref this._betName, value, () => this.BetName); }
+            get { return _bet; }
+            set { this.SetProperty(ref this._bet, value, () => this.Bet); }
         }
+
+
 
         /// <summary>
         /// Gets My Command. 
@@ -50,22 +53,36 @@ namespace BetClic.BetTinder.Core.ViewModels
         /// </summary>
         public ICommand AcceptBet
         {
-            get { return this.myCommand ?? (this.myCommand = new MvxCommand(this.Show)); }
+            get { return this.myCommand ?? (this.myCommand = new MvxCommand(AcceptBetCommand)); }
         }
 
         /// <summary>
         /// Show the view model.
         /// </summary>
-        public void Show()
+        public void AcceptBetCommand()
         {
             // validate bet
-            BetName += " Some Value";
-            // send to db
+            Bet = _proposedBetsService.GetBets().First();
 
-            // show 'bet accepted viewmodel'
-           // this.ShowViewModel<FirstViewModel>();
+            // mimicks sending to server sort of kinda maybe
+            //if (PluginLoader.Instance.SendMessage("dsadjsalkd"))
+            //{
+            //    // message accepted 
+            //    // bet object instantiation
+            //    // await _propose...
+            //    // AccountTotal -= Bet.BetValue
+            //    Bet = _proposedBetsService.GetBets().First().Name;
+            //}
+            //else
+            //{
+            //    // message rejected 
+            //    // bet stays the same, but message fucks off
+            //}
         }
 
-        
+        public void RejectBetCommand()
+        {
+            Bet = _proposedBetsService.GetBets().First();
+        }
     }
 }

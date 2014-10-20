@@ -25,7 +25,7 @@ namespace BetClic.BetTinder.iOS.Views
     {
         private UIImageView _mainImage;
         private UIRotationGestureRecognizer _rotationGestureRecognizer;
-        private UIPanGestureRecognizer panGesture;
+        private UIPanGestureRecognizer _panGesture;
 
         /// <summary>
         /// Views the did load.
@@ -36,7 +36,7 @@ namespace BetClic.BetTinder.iOS.Views
         public override void ViewDidLoad()
         {
             this.View = new UIView { BackgroundColor = UIColor.White };
-            
+
             base.ViewDidLoad();
 
             UILabel uiLabel = new UILabel(new RectangleF(10, 10, 300, 40));
@@ -47,7 +47,7 @@ namespace BetClic.BetTinder.iOS.Views
 
             using (var image = UIImage.FromFile("150x150.gif"))
             {
-                _mainImage = new UIImageView(image) {Frame = new RectangleF(10, 100, 150, 150)};
+                _mainImage = new UIImageView(image) { Frame = new RectangleF(100, 100, 150, 150) };
                 _mainImage.UserInteractionEnabled = true;
                 View.AddSubview(_mainImage);
             };
@@ -66,7 +66,8 @@ namespace BetClic.BetTinder.iOS.Views
             });
 
             float dx = 0, dy = 0;
-            panGesture = new UIPanGestureRecognizer(pg =>
+            PointF originalImageViewX = _mainImage.Center;
+            _panGesture = new UIPanGestureRecognizer(pg =>
             {
                 var p0 = pg.LocationInView(View);
                 if (pg.State == UIGestureRecognizerState.Began || pg.State == UIGestureRecognizerState.Changed)
@@ -81,6 +82,18 @@ namespace BetClic.BetTinder.iOS.Views
 
                     _mainImage.Center = p1;
                     _mainImage.Layer.BorderWidth = 2.0f;
+
+                    _mainImage.Layer.BorderColor = new CGColor(0, 0, 0);
+
+                    if (_mainImage.Center.X > 250)
+                    {
+                        _mainImage.Layer.BorderColor = new CGColor(0, 255, 0);
+                    }
+
+                    if (_mainImage.Center.X < 150)
+                    {
+                        _mainImage.Layer.BorderColor = new CGColor(255, 0, 0);
+                    }
                 }
 
                 if (pg.State == UIGestureRecognizerState.Ended)
@@ -97,11 +110,11 @@ namespace BetClic.BetTinder.iOS.Views
                         // add to rejected bet pile and pop a new one
                     }
 
-                    _mainImage.Center = new PointF(10, 100);
+                    _mainImage.Center = originalImageViewX;
                 }
             });
 
-            _mainImage.AddGestureRecognizer(panGesture);
+            _mainImage.AddGestureRecognizer(_panGesture);
             _mainImage.AddGestureRecognizer(_rotationGestureRecognizer);
 
             var button = new UIButton(new RectangleF(10, 100, 300, 40));
@@ -109,9 +122,9 @@ namespace BetClic.BetTinder.iOS.Views
             View.AddSubview(button);
 
             var set = this.CreateBindingSet<FirstView, FirstViewModel>();
-            set.Bind(uiLabel).To(vm => vm.BetName);
+            set.Bind(uiLabel).To(vm => vm.Bet);
             set.Bind(button).To(vm => vm.AcceptBet);
-            set.Bind(uiTextField).To(vm => vm.BetName);
+            set.Bind(uiTextField).To(vm => vm.Bet);
             set.Apply();
 
             var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());
