@@ -42,7 +42,7 @@ namespace BetClic.BetTinder.Core.ViewModels
         }
 
         /// <summary>
-        /// Gets My Command.
+        /// Gets My Command. 
         /// <para>
         /// An example of a command and how to navigate to another view model
         /// Note the ViewModel inside of ShowViewModel needs to change!

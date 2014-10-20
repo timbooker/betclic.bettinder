@@ -7,3 +7,12 @@ C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.Core\bin\Debug\Cirrio
 C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.Core\bin\Debug\Cirrious.MvvmCross.Plugins.Messenger.dll
 C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.Core\obj\Debug\BetClic.BetTinder.Core.dll
 C:\dev\ninjacoder\bct1\BetClic.BetTinder\BetClic.BetTinder.Core\obj\Debug\BetClic.BetTinder.Core.pdb
+C:\Development\betclic.bettinder\BetClic.BetTinder.Core\bin\Debug\BetClic.BetTinder.Core.dll
+C:\Development\betclic.bettinder\BetClic.BetTinder.Core\bin\Debug\BetClic.BetTinder.Core.pdb
+C:\Development\betclic.bettinder\BetClic.BetTinder.Core\bin\Debug\Cirrious.CrossCore.dll
+C:\Development\betclic.bettinder\BetClic.BetTinder.Core\bin\Debug\Cirrious.MvvmCross.dll
+C:\Development\betclic.bettinder\BetClic.BetTinder.Core\bin\Debug\Cirrious.MvvmCross.Localization.dll
+C:\Development\betclic.bettinder\BetClic.BetTinder.Core\bin\Debug\Cirrious.MvvmCross.Plugins.Messenger.dll
+C:\Development\betclic.bettinder\BetClic.BetTinder.Core\obj\Debug\BetClic.BetTinder.Core.csprojResolveAssemblyReference.cache
+C:\Development\betclic.bettinder\BetClic.BetTinder.Core\obj\Debug\BetClic.BetTinder.Core.dll
+C:\Development\betclic.bettinder\BetClic.BetTinder.Core\obj\Debug\BetClic.BetTinder.Core.pdb
