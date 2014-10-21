@@ -116,9 +116,7 @@ namespace BetClic.BetTinder.Core.ViewModels
             Bet = bet;
 
             var user = _userAccountService.DeductBalance(_userAccount, _betAmount);
-            user.UserName = "Bet Accepted user";
             UserAccount = user;
-            SetProperty(ref _userAccount, user, () => UserAccount);
 
             var nextBet = _proposedBetsService.GetNextBet();
             NextBet = nextBet;
