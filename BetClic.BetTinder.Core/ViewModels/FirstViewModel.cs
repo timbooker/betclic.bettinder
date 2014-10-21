@@ -114,5 +114,6 @@ namespace BetClic.BetTinder.Core.ViewModels
         {
             /// At the moment not used and done directly in the IOS View   
         }
+        
     }
 }

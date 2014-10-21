@@ -27,6 +27,7 @@ namespace BetClic.BetTinder.iOS.Views
         private readonly string ACCEPT_MESSAGE = "Your bet has been Submitted. Good Luck!";
         private readonly string REJECT_MESSAGE = "Bet Rejected";
         private UIImageView _mainImage;
+        
         private UIRotationGestureRecognizer _rotationGestureRecognizer;
         private UIPanGestureRecognizer _panGesture;
 
@@ -48,13 +49,29 @@ namespace BetClic.BetTinder.iOS.Views
             UITextField uiTextField = new UITextField(new RectangleF(10, 50, 300, 40));
             View.AddSubview(uiTextField);
 
-
             using (var image = UIImage.FromFile("150x150.gif"))
             {
                 _mainImage = new UIImageView(image) { Frame = new RectangleF(100, 100, 150, 150) };
                 _mainImage.UserInteractionEnabled = true;
                 View.AddSubview(_mainImage);
             }
+
+
+            var screenBounds = UIScreen.MainScreen.Bounds;
+            // Load Buttons Part
+            var acceptButton = UIButton.FromType(UIButtonType.Custom);
+            acceptButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
+  //         acceptButton.TouchUpInside += (sender, ae) => { AcceptBet(); };
+            acceptButton.Center = new PointF(50, 450);
+            acceptButton.SizeThatFits(new SizeF(50, 50));
+
+            var rejectButton = UIButton.FromType(UIButtonType.Custom);
+            rejectButton.SetImage(UIImage.FromFile("reject.png"), UIControlState.Normal);
+//          rejectButton.TouchUpInside += (sender, ae) => { RejectBet(); };
+            rejectButton.Center = new PointF(150, 450);
+            rejectButton.SizeThatFits(new SizeF(50, 50));
+
+
 
             float r = 0;
             _rotationGestureRecognizer = new UIRotationGestureRecognizer(x =>
@@ -105,21 +122,16 @@ namespace BetClic.BetTinder.iOS.Views
                     dx = 0;
                     dy = 0;
 
+                    // Right Swipe
                     if (p0.X > 100)
                     {
-                        // awkward, but required to break it a little to get the goodness out
-                        var vm = ViewModel as FirstViewModel;
-                        if (vm != null) vm.AcceptBetCommand();
-                        ShowUIAlert("Bet Accepted", ACCEPT_MESSAGE);
-                        
+                        AcceptBet();
                     }
+
+                    // Left Swipe
                     if (p0.X < 100)
                     {
-                        // add to rejected bet pile and pop a new one
-                        var vm = ViewModel as FirstViewModel;
-                        if (vm != null) vm.RejectBetCommand();
-                        ShowUIAlert("Bet Rejected", REJECT_MESSAGE);
-
+                        RejectBet();
                     }
 
                     _mainImage.Center = originalImageViewX;
@@ -132,10 +144,27 @@ namespace BetClic.BetTinder.iOS.Views
             var set = this.CreateBindingSet<FirstView, FirstViewModel>();
             set.Bind(uiLabel).To(vm => vm.Bet.Name);
             set.Bind(uiTextField).To(vm => vm.Bet.Odds);
-            set.Apply();
+            set.Bind(acceptButton).To(vm => vm.AcceptBet);
+            set.Bind(rejectButton).To(vm => vm.RejectBet);
 
             var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());
             View.AddGestureRecognizer(tap);
+        }
+
+        private void AcceptBet()
+        {
+            // awkward, but required to break it a little to get the goodness out
+            var vm = ViewModel as FirstViewModel;
+            if (vm != null) vm.AcceptBetCommand();
+            ShowUIAlert("Bet Accepted", ACCEPT_MESSAGE);
+            
+        }
+
+        private void RejectBet()
+        {
+            var vm = ViewModel as FirstViewModel;
+            if (vm != null) vm.RejectBetCommand();
+            ShowUIAlert("Bet Rejected", REJECT_MESSAGE);
         }
 
         /// <summary>

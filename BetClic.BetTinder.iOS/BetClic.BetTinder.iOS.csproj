@@ -125,9 +125,14 @@
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BundleResource Include="Resources\reject.png" />
+  </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\150x150.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\accept.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
 </Project>
