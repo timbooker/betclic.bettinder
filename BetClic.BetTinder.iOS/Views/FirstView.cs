@@ -215,20 +215,25 @@ namespace BetClic.BetTinder.iOS.Views
 
         private void AcceptBet()
         {
-                        // awkward, but required to break it a little to get the goodness out
-                        var vm = ViewModel as FirstViewModel;
-                        if (vm != null) vm.AcceptBetCommand();
-                        ShowUIAlert("Bet Accepted", ACCEPT_MESSAGE);
+            // awkward, but required to break it a little to get the goodness out
+            var vm = ViewModel as FirstViewModel;
+            if (vm != null)
+            {
+                string messageString = "";
+                vm.AcceptBetCommand(messageString);
 
-                    }
+                ShowUIAlert("Bet Info", (String.IsNullOrEmpty(messageString))? ACCEPT_MESSAGE: messageString);
+            }
+
+        }
 
         private void RejectBet()
-                    {
-                        // add to rejected bet pile and pop a new one
-                        var vm = ViewModel as FirstViewModel;
-                        if (vm != null) vm.RejectBetCommand();
-                        ShowUIAlert("Bet Rejected", REJECT_MESSAGE);
-                    }
+        {
+            // add to rejected bet pile and pop a new one
+            var vm = ViewModel as FirstViewModel;
+            if (vm != null) vm.RejectBetCommand();
+            ShowUIAlert("Bet Rejected", REJECT_MESSAGE);
+        }
 
         /// <summary>
         /// Show UI Alert to UserAccount

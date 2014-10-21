@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Linq;
+using System.Runtime.Versioning;
 using BetClic.BetTinder.Core.Entities;
 using BetClic.BetTinder.Core.Services;
 using Cirrious.MvvmCross.Plugins.Messenger;
@@ -85,7 +86,7 @@ namespace BetClic.BetTinder.Core.ViewModels
         private ICommand _acceptCommand;
         public ICommand AcceptBet
         {
-            get { return this._acceptCommand ?? (this._acceptCommand = new MvxCommand(AcceptBetCommand)); }
+            get { return this._acceptCommand ?? (this._acceptCommand = new MvxCommand<string>(AcceptBetCommand)); }
         }
 
         private ICommand _rejectCommand;
@@ -104,17 +105,25 @@ namespace BetClic.BetTinder.Core.ViewModels
         /// <summary>
         /// Show the view model.
         /// </summary>
-        public void AcceptBetCommand()
+        private readonly string INSUFFICIENT_MESSAGE = "Woopsie... You have insufficient funds to place this bet.";
+        public void AcceptBetCommand(string message)
         {
             // validate bet
-            var bet = NextBet;
-            Bet = bet;
+            if (_userAccount.Balance >= _betAmount)
+            {
+                var bet = NextBet;
+                Bet = bet;
+                var user = _userAccountService.DeductBalance(_userAccount, _betAmount);
+                UserAccount = user;
 
-            var user = _userAccountService.DeductBalance(_userAccount, _betAmount);
-            UserAccount = user;
-
-            var nextBet = _proposedBetsService.GetNextBet();
-            NextBet = nextBet;
+                var nextBet = _proposedBetsService.GetNextBet();
+                NextBet = nextBet;
+                message =  "";
+            }
+            else
+            {
+                message = INSUFFICIENT_MESSAGE;
+            }
             // mimicks sending to server sort of kinda maybe
             //if (PluginLoader.Instance.SendMessage("dsadjsalkd"))
             //{
