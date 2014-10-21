@@ -24,6 +24,8 @@ namespace BetClic.BetTinder.iOS.Views
     [Register("FirstView")]
     public class FirstView : BaseView
     {
+        private readonly string ACCEPT_MESSAGE = "Your bet has been Submitted. Good Luck!";
+        private readonly string REJECT_MESSAGE = "Bet Rejected";
         private UIImageView _mainImage;
         private UIRotationGestureRecognizer _rotationGestureRecognizer;
         private UIPanGestureRecognizer _panGesture;
@@ -108,6 +110,7 @@ namespace BetClic.BetTinder.iOS.Views
                         // awkward, but required to break it a little to get the goodness out
                         var vm = ViewModel as FirstViewModel;
                         if (vm != null) vm.AcceptBetCommand();
+                        ShowUIAlert("Bet Accepted", ACCEPT_MESSAGE);
                         
                     }
                     if (p0.X < 100)
@@ -115,6 +118,8 @@ namespace BetClic.BetTinder.iOS.Views
                         // add to rejected bet pile and pop a new one
                         var vm = ViewModel as FirstViewModel;
                         if (vm != null) vm.RejectBetCommand();
+                        ShowUIAlert("Bet Rejected", REJECT_MESSAGE);
+
                     }
 
                     _mainImage.Center = originalImageViewX;
@@ -131,6 +136,17 @@ namespace BetClic.BetTinder.iOS.Views
 
             var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());
             View.AddGestureRecognizer(tap);
+        }
+
+        /// <summary>
+        /// Show UI Alert to User
+        /// </summary>
+        /// <param name="title">Alert Title</param>
+        /// <param name="message">Alert Message</param>
+        private void ShowUIAlert(string title, string message)
+        {
+            UIAlertView alertView = new UIAlertView(title, message, null, "Ok", null);
+            alertView.Show();
         }
     }
 }

@@ -58,6 +58,9 @@ namespace BetClic.BetTinder.Core.ViewModels
             get { return this.myCommand ?? (this.myCommand = new MvxCommand(AcceptBetCommand)); }
         }
 
+        /// <summary>
+        /// Reject Bet Command
+        /// </summary>
         public ICommand RejectBet
         {
             get
@@ -66,6 +69,7 @@ namespace BetClic.BetTinder.Core.ViewModels
                 return this.myCommand;
             }
         }
+
 
         /// <summary>
         /// Show the view model.
@@ -94,6 +98,9 @@ namespace BetClic.BetTinder.Core.ViewModels
             //}
         }
 
+        /// <summary>
+        /// Reject a Bet
+        /// </summary>
         public void RejectBetCommand()
         {
             // validate bet
@@ -101,6 +108,11 @@ namespace BetClic.BetTinder.Core.ViewModels
             bet.Name += "Rejected Bet";
 
             Bet = bet;
+        }
+
+        public void ShowAlertPopupCommand()
+        {
+            /// At the moment not used and done directly in the IOS View   
         }
     }
 }
