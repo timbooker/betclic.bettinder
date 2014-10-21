@@ -21,10 +21,7 @@ namespace BetClic.BetTinder.Core.ViewModels
     {
         private readonly IProposedBetsService _proposedBetsService;
 
-        /// <summary>
-        ///  Backing field for my command.
-        /// </summary>
-        private MvxCommand myCommand;
+
 
         public FirstViewModel(IProposedBetsService proposedBetsService, IUserAccountService userAccountService)
         {
@@ -81,18 +78,17 @@ namespace BetClic.BetTinder.Core.ViewModels
         private readonly IUserAccountService _userAccountService;
 
 
+
         /// <summary>
-        /// Gets My Command. 
-        /// <para>
-        /// An example of a command and how to navigate to another view model
-        /// Note the ViewModel inside of ShowViewModel needs to change!
-        /// </para>
+        ///  Backing field for my command.
         /// </summary>
+        private ICommand _acceptCommand;
         public ICommand AcceptBet
         {
-            get { return this.myCommand ?? (this.myCommand = new MvxCommand(AcceptBetCommand)); }
+            get { return this._acceptCommand ?? (this._acceptCommand = new MvxCommand(AcceptBetCommand)); }
         }
 
+        private ICommand _rejectCommand;
         /// <summary>
         /// Reject Bet Command
         /// </summary>
@@ -100,8 +96,7 @@ namespace BetClic.BetTinder.Core.ViewModels
         {
             get
             {
-                this.myCommand = new MvxCommand(RejectBetCommand);
-                return this.myCommand;
+                return this._rejectCommand ?? (this._rejectCommand = new MvxCommand(RejectBetCommand));
             }
         }
 
