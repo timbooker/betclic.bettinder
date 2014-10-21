@@ -17,7 +17,7 @@ namespace BetClic.BetTinder.Core.Services
         public string HomeTeam { get; set; }
         public string AwayTeam { get; set; }
         public int HomeTeamScore { get; set; }
-        public int AwayTeamScore { get; set; }
+        public int AwayTeamScore { get; set; }  
         public DateTime MatchDate { get; set; }
     }
 }

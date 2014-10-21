@@ -27,6 +27,8 @@ namespace BetClic.BetTinder.iOS.Views
     [Register("FirstView")]
     public class FirstView : BaseView
     {
+        
+
         private readonly string ACCEPT_MESSAGE = "Your bet has been Submitted. Good Luck!";
         private readonly string INSUFFICIENT_FUNDS_MESSAGE = "Woopsie.. You do not have sufficient funnds.";
         private readonly string REJECT_MESSAGE = "Bet Rejected.";
@@ -34,6 +36,8 @@ namespace BetClic.BetTinder.iOS.Views
         private UIImageView _nextBet;
         private UIPanGestureRecognizer _panGesture;
         private UITextField _uiTextFieldBetAmount;
+        private UIImageView _playerIcon;
+        private RectangleF _bounds;
 
         /// <summary>
         /// Views the did load.
@@ -43,8 +47,15 @@ namespace BetClic.BetTinder.iOS.Views
         /// </summary>
         public override void ViewDidLoad()
         {
+            _bounds = UIScreen.MainScreen.Bounds;
+
+            NavigationController.SetNavigationBarHidden(true, true);
+
             this.View = new UIView { BackgroundColor = UIColor.White };
             base.ViewDidLoad();
+
+            CreateTopBar();
+
 
             _currentBet = new UIImageView() { Frame = new RectangleF(100, 100, 150, 150) };
             _currentBet.UserInteractionEnabled = true;
@@ -60,10 +71,6 @@ namespace BetClic.BetTinder.iOS.Views
             var mvxImageViewLoader = new MvxImageViewLoader(() => _currentBet);
             View.AddSubview(_currentBet);
             
-
-
-            var screenBounds = UIScreen.MainScreen.Bounds;
-
             // Load Buttons Part
             var acceptButton = UIButton.FromType(UIButtonType.Custom);
             acceptButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
@@ -141,6 +148,22 @@ namespace BetClic.BetTinder.iOS.Views
 
 
             WireViewModelEvents();
+        }
+
+        private void CreateTopBar()
+        {
+            var sideWidths = _bounds.Width/7;
+            var sideHeights = _bounds.Height/7;
+
+            // View.BackgroundColor = new UIColor(new CGColor("Gray"));
+            using (var image = UIImage.FromFile("PlayerIcon.png"))
+            {
+                _playerIcon = new UIImageView(image)
+                {
+                    Frame = new RectangleF(0, 25, 58, 56),
+                };
+                View.AddSubview(_playerIcon);
+            }
         }
 
         /// <summary>
