@@ -48,6 +48,9 @@ namespace BetClic.BetTinder.iOS.Views
             UITextField uiTextField = new UITextField(new RectangleF(10, 50, 300, 40));
             View.AddSubview(uiTextField);
 
+            UILabel userName = new UILabel(new RectangleF(10, 200, 300, 40));
+            View.AddSubview(userName);
+
 
             using (var image = UIImage.FromFile("150x150.gif"))
             {
@@ -132,6 +135,7 @@ namespace BetClic.BetTinder.iOS.Views
             var set = this.CreateBindingSet<FirstView, FirstViewModel>();
             set.Bind(uiLabel).To(vm => vm.Bet.Name);
             set.Bind(uiTextField).To(vm => vm.Bet.Odds);
+            set.Bind(userName).To(vm => vm.User.UserName);
             set.Apply();
 
             var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());

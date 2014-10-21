@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Linq;
+using BetClic.BetTinder.Core.Entities;
 using BetClic.BetTinder.Core.Services;
 using Cirrious.MvvmCross.Plugins.Messenger;
 
@@ -25,14 +26,28 @@ namespace BetClic.BetTinder.Core.ViewModels
         /// </summary>
         private MvxCommand myCommand;
 
-        public FirstViewModel(IProposedBetsService proposedBetsService)
+        public FirstViewModel(IProposedBetsService proposedBetsService, IUserAccountService userAccountService)
         {
             _proposedBetsService = proposedBetsService;
+            _userAccountService = userAccountService;
 
             if (_bet == null)
                 _bet = _proposedBetsService.GetNextBet();
 
+            if (_userAccount == null)
+                _userAccount = userAccountService.GetUserAccount();
+
         }
+
+        private decimal _betAmount;
+        
+        public decimal BetAmount
+        {
+            get { return _betAmount; }
+        
+            set { _betAmount = value; }
+        }
+
 
         private Bet _bet;
         /// <summary>
@@ -44,6 +59,15 @@ namespace BetClic.BetTinder.Core.ViewModels
             set { this.SetProperty(ref this._bet, value, () => this.Bet); }
         }
 
+        private UserAccount _userAccount;
+
+        public UserAccount User
+        {
+            get { return _userAccount; }
+            set { _userAccount = value; }
+        }
+
+        private IUserAccountService _userAccountService;
 
 
         /// <summary>
@@ -81,6 +105,7 @@ namespace BetClic.BetTinder.Core.ViewModels
             bet.Name += "Accepted Bet";
 
             Bet = bet;
+            _userAccount = _userAccountService.DeductBalance(_userAccount, _betAmount);
 
             // mimicks sending to server sort of kinda maybe
             //if (PluginLoader.Instance.SendMessage("dsadjsalkd"))
