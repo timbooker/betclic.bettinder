@@ -33,7 +33,7 @@ namespace BetClic.BetTinder.iOS.Views
             TableView.Source = source;
 
             var set = this.CreateBindingSet<StatsView, StatsViewModel>();
-            set.Bind(source).To(vm => vm.Bet.PreviousResults);
+            set.Bind(source).To(vm => vm.PreviousResults);
             set.Apply();
         }
     }

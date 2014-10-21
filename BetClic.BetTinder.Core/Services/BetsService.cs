@@ -40,9 +40,21 @@ namespace BetClic.BetTinder.Core.Services
                 HomeTeam = homeEnum.ToString(),
                 AwayTeam = awayEnum.ToString(),
                 Odds = RandomNumberBetween(),
+                Description = GetDescription(homeEnum, awayEnum),
                 ImageName = string.Format("http://lorempixel.com/200/200/sports?x={0}", new Random().Next()),// get from placeholder website directly (http://somephwebsite/football/etc)
                 PreviousResults = GetHistoricalEvents(homeEnum, awayEnum)
             };
+        }
+
+        private string GetDescription(Clubs.FootballClubs homeTeam, Clubs.FootballClubs awayTeam)
+        {
+            var rand = new Random();
+            var random = rand.Next(1, 2);
+            var res = homeTeam;
+            if (random == 1)
+                res = awayTeam;
+
+            return string.Format("{0} to win, {1} - {2}", res, rand.Next(3, 5), rand.Next(0, 2));
         }
 
         public List<Bet> GetAcceptedBets()

@@ -10,6 +10,7 @@ namespace BetClic.BetTinder.Core.Services
         public string HomeTeam { get; set; }
         public string AwayTeam { get; set; }
         public double Odds { get; set; }
+        public string Description { get; set; }
         public string ImageName { get; set; }
         public IEnumerable<PreviousResults> PreviousResults { get; set; }
     }

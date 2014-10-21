@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using BetClic.BetTinder.Core.Services;
 
 namespace BetClic.BetTinder.Core.ViewModels
@@ -5,11 +7,11 @@ namespace BetClic.BetTinder.Core.ViewModels
     public class StatsViewModel : BaseViewModel
     {
         
-        public void Init(Bet bet)
+        public void Init(IEnumerable<PreviousResults> previousResults)
         {
-            Bet = bet;
+            PreviousResults = previousResults;
         }
 
-        public Bet Bet { get; set; }
+        public IEnumerable<PreviousResults> PreviousResults { get; set; }
     }
 }

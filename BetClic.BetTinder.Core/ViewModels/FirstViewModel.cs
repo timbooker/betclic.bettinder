@@ -115,7 +115,7 @@ namespace BetClic.BetTinder.Core.ViewModels
 
         private void GoToStatsScreen()
         {
-            this.ShowViewModel<StatsViewModel>(Bet);
+            this.ShowViewModel<StatsViewModel>(Bet.PreviousResults);
         }
 
         public void IncrementBetTotal()
