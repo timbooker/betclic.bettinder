@@ -58,6 +58,15 @@ namespace BetClic.BetTinder.Core.ViewModels
             get { return this.myCommand ?? (this.myCommand = new MvxCommand(AcceptBetCommand)); }
         }
 
+        public ICommand RejectBet
+        {
+            get
+            {
+                this.myCommand = new MvxCommand(RejectBetCommand);
+                return this.myCommand;
+            }
+        }
+
         /// <summary>
         /// Show the view model.
         /// </summary>
@@ -87,7 +96,11 @@ namespace BetClic.BetTinder.Core.ViewModels
 
         public void RejectBetCommand()
         {
-            // Bet = _proposedBetsService.GetNextBet().First();
+            // validate bet
+            var bet = _proposedBetsService.GetNextBet();
+            bet.Name += "Rejected Bet";
+
+            Bet = bet;
         }
     }
 }
