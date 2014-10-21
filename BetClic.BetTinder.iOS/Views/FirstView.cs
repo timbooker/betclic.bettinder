@@ -113,6 +113,8 @@ namespace BetClic.BetTinder.iOS.Views
                     if (p0.X < 100)
                     {
                         // add to rejected bet pile and pop a new one
+                        var vm = ViewModel as FirstViewModel;
+                        if (vm != null) vm.RejectBetCommand();
                     }
 
                     _mainImage.Center = originalImageViewX;
