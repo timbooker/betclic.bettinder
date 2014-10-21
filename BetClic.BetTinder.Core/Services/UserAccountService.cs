@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BetClic.BetTinder.Core.Entities;
+using Cirrious.CrossCore.Core;
 
 namespace BetClic.BetTinder.Core.Services
 {
@@ -28,7 +29,11 @@ namespace BetClic.BetTinder.Core.Services
         public UserAccount DeductBalance(UserAccount user, decimal balanceToDeduct)
         {
             user.Balance -= balanceToDeduct;
-            return user;
+            return new UserAccount()
+            {
+                UserName = user.UserName,
+                Balance = user.Balance,
+            };  
         }
 
         public UserAccount IncreaseBalance(UserAccount user, decimal balanceToIncrease)
