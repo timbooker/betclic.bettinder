@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using BetClic.BetTinder.Core.Entities;
+using Cirrious.MvvmCross.Platform;
 
 namespace BetClic.BetTinder.Core.Services
 {
@@ -14,15 +16,32 @@ namespace BetClic.BetTinder.Core.Services
             imageNames = new string[]{ "pic1", "pic2", "pic3", "pic4", "pic5" };
         }
 
+
+        private readonly Random random = new Random();
+
+        private double RandomNumberBetween()
+        {
+            var next = random.NextDouble();
+
+            return Math.Round(3 + (next * (3 - 0)), 2);
+        }
+        
+        
         public Bet GetNextBet()
         {           
+            Random rnd = new Random();
+            int homeClub = rnd.Next(1, 968);
+            int awayClub = rnd.Next(1, 968);
+            var homeEnum = (Clubs.FootballClubs)homeClub;
+            var awayEnum = (Clubs.FootballClubs)awayClub;
+            
             return new Bet()
             {
-                // update to use home / away teams (two properties)
-                Name = Guid.NewGuid().ToString().Substring(0, 6),
-                Odds = new Random().NextDouble(), // make 2 d.p.
+                HomeTeam = homeEnum.ToString(),
+                AwayTeam = awayEnum.ToString(),
+                Odds = RandomNumberBetween(),
                 ImageName = string.Format("http://lorempixel.com/200/200/sports?x={0}", new Random().Next()),// get from placeholder website directly (http://somephwebsite/football/etc)
-                PreviousResults = GetHistoricalEvents() // pass in current bet so u can get better data.
+                PreviousResults = GetHistoricalEvents(homeEnum, awayEnum)
             };
         }
 
@@ -36,7 +55,7 @@ namespace BetClic.BetTinder.Core.Services
             acceptedBets.Add(acceptedBet);
         }
 
-        private IEnumerable<PreviousResults> GetHistoricalEvents()
+        private IEnumerable<PreviousResults> GetHistoricalEvents(Clubs.FootballClubs homeTeam, Clubs.FootballClubs awayTeam)
         {
             List<PreviousResults> list = new List<PreviousResults>();
             Random rnd = new Random();
@@ -45,10 +64,8 @@ namespace BetClic.BetTinder.Core.Services
             {
                 list.Add(new PreviousResults()
                 {
-                    // make these related to the bet team name (we'll just do football for now, so 
-                    // get a dictionary of football teams.
-                    HomeTeam = "Home Team " + Guid.NewGuid().ToString().Substring(0, 6),
-                    AwayTeam = "Away Team " + Guid.NewGuid().ToString().Substring(0, 6),
+                    HomeTeam = homeTeam.ToString(),
+                    AwayTeam = awayTeam.ToString(),
                     AwayTeamScore = rnd.Next(0, 10),
                     HomeTeamScore = rnd.Next(0, 10),
                     MatchDate = new DateTime(rnd.Next(1960, 2014), rnd.Next(1,12), rnd.Next(1,28))
