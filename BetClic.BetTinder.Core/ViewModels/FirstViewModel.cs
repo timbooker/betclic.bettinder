@@ -39,6 +39,8 @@ namespace BetClic.BetTinder.Core.ViewModels
             if (_nextBet == null)
                 _nextBet = _proposedBetsService.GetNextBet();
 
+            _betAmount = 2;
+
         }
 
         private decimal _betAmount;
@@ -46,8 +48,8 @@ namespace BetClic.BetTinder.Core.ViewModels
         public decimal BetAmount
         {
             get { return _betAmount; }
-        
-            set { _betAmount = value; }
+
+            set { this.SetProperty(ref this._betAmount, value, () => this.BetAmount); }
         }
 
 
@@ -70,13 +72,13 @@ namespace BetClic.BetTinder.Core.ViewModels
         }
         private UserAccount _userAccount;
 
-        public UserAccount User
+        public UserAccount UserAccount
         {
             get { return _userAccount; }
-            set { _userAccount = value; }
+            set { this.SetProperty(ref this._userAccount, value, () => this.UserAccount); }
         }
 
-        private IUserAccountService _userAccountService;
+        private readonly IUserAccountService _userAccountService;
 
 
         /// <summary>
@@ -112,7 +114,11 @@ namespace BetClic.BetTinder.Core.ViewModels
             // validate bet
             var bet = NextBet;
             Bet = bet;
-            _userAccount = _userAccountService.DeductBalance(_userAccount, _betAmount);
+
+            var user = _userAccountService.DeductBalance(_userAccount, _betAmount);
+            user.UserName = "Bet Accepted user";
+            UserAccount = user;
+            SetProperty(ref _userAccount, user, () => UserAccount);
 
             var nextBet = _proposedBetsService.GetNextBet();
             NextBet = nextBet;
