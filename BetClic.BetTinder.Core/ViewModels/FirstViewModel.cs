@@ -24,6 +24,7 @@ namespace BetClic.BetTinder.Core.ViewModels
         private readonly IProposedBetsService _proposedBetsService;
         public EventHandler OnBetAccepted;
         public EventHandler OnBetRejected;
+        public EventHandler InsufficientFunds;
 
 
         public FirstViewModel(IProposedBetsService proposedBetsService, IUserAccountService userAccountService)
@@ -86,7 +87,7 @@ namespace BetClic.BetTinder.Core.ViewModels
         private ICommand _acceptCommand;
         public ICommand AcceptBet
         {
-            get { return this._acceptCommand ?? (this._acceptCommand = new MvxCommand<string>(AcceptBetCommand)); }
+            get { return this._acceptCommand ?? (this._acceptCommand = new MvxCommand(AcceptBetCommand)); }
         }
 
         private ICommand _rejectCommand;
@@ -120,8 +121,7 @@ namespace BetClic.BetTinder.Core.ViewModels
         /// <summary>
         /// Show the view model.
         /// </summary>
-        private readonly string INSUFFICIENT_MESSAGE = "Woopsie... You have insufficient funds to place this bet.";
-        public void AcceptBetCommand(string message)
+        public void AcceptBetCommand()
         {
             // validate bet
             if (_userAccount.Balance >= _betAmount)
@@ -134,17 +134,18 @@ namespace BetClic.BetTinder.Core.ViewModels
                 var nextBet = _proposedBetsService.GetNextBet();
                 NextBet = nextBet;
 
-            // if funds are sufficient
-            if (this.OnBetAccepted != null)
-            {
-                this.OnBetAccepted(this, null);
-            }
+                if (this.OnBetAccepted != null)
+                {
+                    this.OnBetAccepted(this, null);
+                }
 
-                message =  "";
             }
             else
             {
-                message = INSUFFICIENT_MESSAGE;
+                if (this.InsufficientFunds != null)
+                {
+                    this.InsufficientFunds(this, null);
+                }
             }
 
             // mimicks sending to server sort of kinda maybe
