@@ -37,7 +37,17 @@ namespace BetClic.BetTinder.iOS.Views
         private UIPanGestureRecognizer _panGesture;
         private UITextField _uiTextFieldBetAmount;
         private UIImageView _playerIcon;
+        private UIImageView _logo;
+        private UIImageView _betsList;
+        private UIButton _btnAccept;
+        private UIButton _btnReject;
+        private UIButton _btnStats;
+        private UIButton _btnIncreaseBet;
+        private UIButton _btnDecreaseBet;
         private RectangleF _bounds;
+
+        private UILabel _lblUserBalance;
+        private float sideHeights;
 
         /// <summary>
         /// Views the did load.
@@ -48,10 +58,11 @@ namespace BetClic.BetTinder.iOS.Views
         public override void ViewDidLoad()
         {
             _bounds = UIScreen.MainScreen.Bounds;
-
+            sideHeights = _bounds.Height/7;
+  
             NavigationController.SetNavigationBarHidden(true, true);
 
-            this.View = new UIView { BackgroundColor = UIColor.White };
+            this.View = new UIView { BackgroundColor = UIColor.Gray };
             base.ViewDidLoad();
 
             CreateTopBar();
@@ -61,7 +72,6 @@ namespace BetClic.BetTinder.iOS.Views
             _currentBet.UserInteractionEnabled = true;
             
             
-            _uiTextFieldBetAmount = new UITextField(new RectangleF(10, 320, 300, 40));
             using (var image = UIImage.FromFile("pic2.jpg"))
             {
                 _nextBet = new UIImageView(image) { Frame = new RectangleF(100, 100, 175, 175) };
@@ -72,50 +82,7 @@ namespace BetClic.BetTinder.iOS.Views
             View.AddSubview(_currentBet);
             
             // Load Buttons Part
-            var acceptButton = UIButton.FromType(UIButtonType.Custom);
-            acceptButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
-
-            var buttonWidth = 50;
-            var buttonHeight = 50;
-            acceptButton.Frame = new RectangleF(
-                10,
-                300,
-                buttonWidth,
-                buttonHeight);
-
-            View.AddSubview(acceptButton);
-
-            var rejectButton = UIButton.FromType(UIButtonType.Custom);
-            rejectButton.SetImage(UIImage.FromFile("reject.png"), UIControlState.Normal);
-            rejectButton.Frame = new RectangleF(
-                150,
-                300,
-                buttonWidth,
-                buttonHeight);
-
-            View.AddSubview(rejectButton);
-
-
-            _uiTextFieldBetAmount.KeyboardType = UIKeyboardType.NumberPad;
-            View.AddSubview(_uiTextFieldBetAmount);
-
-            var plusButton = UIButton.FromType(UIButtonType.Custom);
-            plusButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
-            plusButton.Frame = new RectangleF(
-                    50,
-                    320,
-                    buttonWidth,
-                    buttonHeight);
-            View.AddSubview(plusButton);
-
-            var minusButton = UIButton.FromType(UIButtonType.Custom);
-            minusButton.SetImage(UIImage.FromFile("reject.png"), UIControlState.Normal);
-            minusButton.Frame = new RectangleF(
-                     90,
-                     320,
-                     buttonWidth,
-                     buttonHeight);
-            View.AddSubview(minusButton);
+            CreateBottomPart();
 
             HandleMovement();
 
@@ -127,18 +94,16 @@ namespace BetClic.BetTinder.iOS.Views
             View.AddSubview(uiTextField);
             var userName = new UILabel(new RectangleF(10, 200, 300, 40));
             View.AddSubview(userName);
-            var balance = new UILabel(new RectangleF(10, 250, 300, 40));
-            View.AddSubview(balance);
 
             var set = this.CreateBindingSet<FirstView, FirstViewModel>();
             set.Bind(uiLabel).To(vm => vm.Bet.Name);
             set.Bind(uiTextField).To(vm => vm.Bet.Odds);
             set.Bind(userName).To(vm => vm.UserAccount.UserName);
-            set.Bind(balance).To(vm => vm.UserAccount.Balance);
-            set.Bind(rejectButton).To(vm => vm.RejectBet);
-            set.Bind(acceptButton).To(vm => vm.AcceptBet);
-            set.Bind(plusButton).To(vm => vm.IncrementBet);
-            set.Bind(minusButton).To(vm => vm.DecrementBet);
+            set.Bind(_lblUserBalance).To(vm => vm.UserAccount.Balance);
+            set.Bind(_btnReject).To(vm => vm.RejectBet);
+            set.Bind(_btnAccept).To(vm => vm.AcceptBet);
+            set.Bind(_btnIncreaseBet).To(vm => vm.IncrementBet);
+            set.Bind(_btnDecreaseBet).To(vm => vm.DecrementBet);
             set.Bind(_uiTextFieldBetAmount).To(vm => vm.BetAmount);
             set.Bind(mvxImageViewLoader).For(x => x.ImageUrl).To(vm => vm.Bet.ImageName);
             set.Apply();
@@ -150,19 +115,126 @@ namespace BetClic.BetTinder.iOS.Views
             WireViewModelEvents();
         }
 
+        /// <summary>
+        /// Create Top Bar
+        /// </summary>
         private void CreateTopBar()
         {
-            var sideWidths = _bounds.Width/7;
-            var sideHeights = _bounds.Height/7;
+            var yTop = 20;
+            var yBottom = 20 + sideHeights;
 
-            // View.BackgroundColor = new UIColor(new CGColor("Gray"));
+            var sideWidths = _bounds.Width / 7;
+
+
+            // Player Icon
             using (var image = UIImage.FromFile("PlayerIcon.png"))
             {
                 _playerIcon = new UIImageView(image)
                 {
-                    Frame = new RectangleF(0, 25, 58, 56),
+                    Frame = new RectangleF(0, yTop, sideWidths, sideHeights / 2),
                 };
                 View.AddSubview(_playerIcon);
+            }
+
+            // Add User Balance
+            _lblUserBalance= new UILabel(new RectangleF(0, yTop+ (sideHeights / 2), sideWidths, (sideHeights/ 2)));
+            View.AddSubview(_lblUserBalance);
+
+            // Logo
+            using (var image = UIImage.FromFile("Logo.png"))
+            {
+                _logo = new UIImageView(image)
+                {
+                    Frame = new RectangleF(sideWidths, yTop, sideWidths*5, sideHeights),
+                };
+                View.AddSubview(_logo);
+            }
+
+            // Bets Part
+            using (var image = UIImage.FromFile("Bets.png"))
+            {
+                _betsList = new UIImageView(image)
+                {
+                    Frame = new RectangleF(sideWidths*6, yTop, sideWidths, sideHeights)
+                };
+                View.AddSubview(_betsList);
+            }
+        }
+
+        /// <summary>
+        /// Create Bottom Area
+        /// </summary>
+        private void CreateBottomPart()
+        {
+            
+            var sideWidths = _bounds.Width / 8;
+
+            float yTop = sideHeights*6;
+
+            // Add Reject Button
+            using (var image = UIImage.FromFile("BtnReject.png"))
+            {
+                _btnReject = UIButton.FromType(UIButtonType.Custom);
+                _btnReject.SetImage(image, UIControlState.Normal);
+                _btnReject.Frame = new RectangleF(sideWidths, yTop, 2*sideWidths, sideHeights);                
+                View.AddSubview(_btnReject);
+            }
+
+            // Add Statistics Button
+            using (var image = UIImage.FromFile("CentreButton.png"))
+            {
+                _btnStats = UIButton.FromType(UIButtonType.Custom);
+                _btnStats.SetImage(image, UIControlState.Normal);
+                _btnStats.Frame = new RectangleF(sideWidths*3, yTop, sideWidths, sideHeights);
+                View.AddSubview(_btnStats);
+            }
+
+            // Add Accept Button
+            using (var image = UIImage.FromFile("BtnAccept.png"))
+            {
+                _btnAccept = UIButton.FromType(UIButtonType.Custom);
+                _btnAccept.SetImage(image, UIControlState.Normal);
+                _btnAccept.Frame = new RectangleF(sideWidths*4, yTop, sideWidths*2, sideHeights);
+                View.AddSubview(_btnAccept);
+            }
+
+            // Bet Amount Part
+
+            // Split Bet Part Height in 5 pieces. Arrows = 1 piece each, BetAmount = 2 pieces, 0.5 space
+            var betPartHeight = (float)sideHeights/5;
+
+            // Leave some space from 
+            var betPartWidth = sideWidths/9;
+            var betPartStartX = (sideWidths*6) + (betPartWidth);
+            betPartWidth *= 7;
+            yTop += (float)(betPartHeight*0.5);
+            
+            // Increase Bet Arrow Button
+            using (var image = UIImage.FromFile("ArrowUp.png"))
+            {
+                _btnIncreaseBet = UIButton.FromType(UIButtonType.Custom);
+                _btnIncreaseBet.SetImage(image, UIControlState.Normal);
+                _btnIncreaseBet.Frame = new RectangleF(betPartStartX, yTop, betPartWidth,betPartHeight);
+                View.AddSubview(_btnIncreaseBet);
+            }
+
+            yTop += betPartHeight;
+
+            // Bet Amount textbox
+            _uiTextFieldBetAmount =
+                new UITextField(new RectangleF(betPartStartX, yTop, betPartWidth, betPartHeight*2));
+            _uiTextFieldBetAmount.KeyboardType = UIKeyboardType.NumberPad;
+            View.AddSubview(_uiTextFieldBetAmount);
+
+            yTop += (betPartHeight*2);
+
+            // Decrease Bet Arrow Button
+            using (var image = UIImage.FromFile("ArrowDown"))
+            {
+                _btnDecreaseBet = UIButton.FromType(UIButtonType.Custom);
+                _btnDecreaseBet.SetImage(image, UIControlState.Normal);
+                _btnDecreaseBet.Frame = new RectangleF(betPartStartX, yTop, betPartWidth, betPartHeight);
+                View.AddSubview(_btnDecreaseBet);
             }
         }
 
