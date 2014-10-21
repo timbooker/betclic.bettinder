@@ -20,7 +20,7 @@ namespace BetClic.BetTinder.Core.Services
             {
                 Name = Guid.NewGuid().ToString().Substring(0, 6),
                 Odds = new Random().NextDouble(),
-                ImageName = imageNames[new Random().Next(0, 5)]
+                ImageName = imageNames[new Random().Next(0, 5)] + ".jpg",
             };
         }
 

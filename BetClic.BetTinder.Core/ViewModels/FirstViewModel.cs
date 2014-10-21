@@ -4,7 +4,9 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+
 using System.Collections.Generic;
+using System;
 using System.Linq;
 using BetClic.BetTinder.Core.Entities;
 using BetClic.BetTinder.Core.Services;
@@ -22,6 +24,8 @@ namespace BetClic.BetTinder.Core.ViewModels
     {
         private readonly IBetsService _betsService;
         private readonly IUserAccountService _userAccountService;
+        public EventHandler OnBetAccepted;
+        public EventHandler OnBetRejected;
 
         private Bet _bet;
         private Bet _nextBet;
@@ -88,6 +92,9 @@ namespace BetClic.BetTinder.Core.ViewModels
         }
 
         private ICommand _rejectCommand;
+        private ICommand _incrementBetTotalCommand;
+        private ICommand _decrementBetCommand;
+
         /// <summary>
         /// Reject Bet Command
         /// </summary>
@@ -99,6 +106,18 @@ namespace BetClic.BetTinder.Core.ViewModels
             }
         }
 
+        public ICommand IncrementBet { get { return this._incrementBetTotalCommand ?? (this._incrementBetTotalCommand = new MvxCommand(IncrementBetTotal)); } }
+        public ICommand DecrementBet { get { return this._decrementBetCommand ?? (this._decrementBetCommand = new MvxCommand(DecrementBetTotal)); } }
+
+        public void IncrementBetTotal()
+        {
+            BetAmount += 5;
+        }
+
+        public void DecrementBetTotal()
+        {
+            BetAmount -= 5;
+        }
 
         /// <summary>
         /// Show the view model.
@@ -114,6 +133,14 @@ namespace BetClic.BetTinder.Core.ViewModels
 
             var nextBet = _betsService.GetNextBet();
             NextBet = nextBet;
+
+            // if funds are sufficient
+            if (this.OnBetAccepted != null)
+            {
+                this.OnBetAccepted(this, null);
+            }
+
+
             // mimicks sending to server sort of kinda maybe
             //if (PluginLoader.Instance.SendMessage("dsadjsalkd"))
             //{
@@ -141,6 +168,11 @@ namespace BetClic.BetTinder.Core.ViewModels
 
             var nextBet = _betsService.GetNextBet();
             NextBet = nextBet;
+
+            if (this.OnBetRejected != null)
+            {
+                this.OnBetRejected(this, null);
+            }
 
         }
         
