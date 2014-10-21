@@ -18,10 +18,11 @@ namespace BetClic.BetTinder.Core.Services
         {           
             return new Bet()
             {
+                // update to use home / away teams (two properties)
                 Name = Guid.NewGuid().ToString().Substring(0, 6),
-                Odds = new Random().NextDouble(),
-                ImageName = imageNames[new Random().Next(0, 5)] + ".jpg",
-                PreviousResults = GetHistoricalEvents()
+                Odds = new Random().NextDouble(), // make 2 d.p.
+                ImageName = "http://lorempixel.com/200/200/sports", // get from placeholder website directly (http://somephwebsite/football/etc)
+                PreviousResults = GetHistoricalEvents() // pass in current bet so u can get better data.
             };
         }
 
@@ -44,6 +45,8 @@ namespace BetClic.BetTinder.Core.Services
             {
                 list.Add(new PreviousResults()
                 {
+                    // make these related to the bet team name (we'll just do football for now, so 
+                    // get a dictionary of football teams.
                     HomeTeam = "Home Team " + Guid.NewGuid().ToString().Substring(0, 6),
                     AwayTeam = "Away Team " + Guid.NewGuid().ToString().Substring(0, 6),
                     AwayTeamScore = rnd.Next(0, 10),
