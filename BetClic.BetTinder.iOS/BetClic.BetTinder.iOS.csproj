@@ -149,5 +149,53 @@
   <ItemGroup>
     <BundleResource Include="Resources\pic4.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Transperant\ArrowDown_T.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Transperant\ArrowUp_T.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Transperant\Bets_T.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Transperant\BtnAccept_T.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Transperant\BtnReject_T.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Transperant\CentreButton_T.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Transperant\Logo_Transperant.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Transperant\PlayerIcon_T.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ArrowDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ArrowUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Bets.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\BtnAccept.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\BtnReject.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\CentreButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\PlayerIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
 </Project>
