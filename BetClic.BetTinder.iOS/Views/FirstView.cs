@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Cirrious.CrossCore;
+using Cirrious.MvvmCross.Binding.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.CoreGraphics;
 
@@ -87,12 +88,12 @@ namespace BetClic.BetTinder.iOS.Views
 
                     _mainImage.Layer.BorderColor = new CGColor(0, 0, 0);
 
-                    if (_mainImage.Center.X > 250)
+                    if (_mainImage.Center.X > originalImageViewX.X + 50)
                     {
                         _mainImage.Layer.BorderColor = new CGColor(0, 255, 0);
                     }
 
-                    if (_mainImage.Center.X < 150)
+                    if (_mainImage.Center.X < originalImageViewX.X - 50)
                     {
                         _mainImage.Layer.BorderColor = new CGColor(255, 0, 0);
                     }
@@ -101,6 +102,8 @@ namespace BetClic.BetTinder.iOS.Views
                 if (pg.State == UIGestureRecognizerState.Ended)
                 {
                     dx = 0;
+                    var x = 12312;
+                    var y = x;
                     dy = 0;
 
                     if (p0.X > 100)
@@ -115,6 +118,7 @@ namespace BetClic.BetTinder.iOS.Views
                         // add to rejected bet pile and pop a new one
                     }
 
+                    _mainImage.Layer.BorderColor = new CGColor(0, 0, 0);
                     _mainImage.Center = originalImageViewX;
                 }
             });
