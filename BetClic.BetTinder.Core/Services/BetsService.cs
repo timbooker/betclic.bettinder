@@ -21,6 +21,7 @@ namespace BetClic.BetTinder.Core.Services
                 Name = Guid.NewGuid().ToString().Substring(0, 6),
                 Odds = new Random().NextDouble(),
                 ImageName = imageNames[new Random().Next(0, 5)] + ".jpg",
+                PreviousResults = GetHistoricalEvents()
             };
         }
 
@@ -33,5 +34,26 @@ namespace BetClic.BetTinder.Core.Services
         {
             acceptedBets.Add(acceptedBet);
         }
+
+        private IEnumerable<PreviousResults> GetHistoricalEvents()
+        {
+            List<PreviousResults> list = new List<PreviousResults>();
+            Random rnd = new Random();
+            int numberOfLoops = rnd.Next(1, 10);
+            for (int i = 0; i < numberOfLoops; i++)
+            {
+                list.Add(new PreviousResults()
+                {
+                    HomeTeam = "Home Team " + Guid.NewGuid().ToString().Substring(0, 6),
+                    AwayTeam = "Away Team " + Guid.NewGuid().ToString().Substring(0, 6),
+                    AwayTeamScore = rnd.Next(0, 10),
+                    HomeTeamScore = rnd.Next(0, 10),
+                    MatchDate = new DateTime(rnd.Next(1960, 2014), rnd.Next(1,12), rnd.Next(1,28))
+                });
+            }
+
+            return list;
+        }
+
     }
 }
