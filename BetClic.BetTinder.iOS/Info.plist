@@ -13,7 +13,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>3.2</string>
+	<string></string>
 	<key>CFBundleDisplayName</key>
 	<string>BetClic.BetTinder.iOS</string>
 	<key>CFBundleIdentifier</key>
@@ -22,5 +22,16 @@
 	<string>1.0</string>
 	<key>CFBundleShortVersionString</key>
 	<string></string>
+	<key>CFBundleIconFiles</key>
+	<array>
+		<string>Icon@2x.png</string>
+		<string>Icon.png</string>
+		<string>Icon-60@2x.png</string>
+		<string>Icon-Small@2x.png</string>
+		<string>Icon-Small.png</string>
+		<string>Icon-Small-40@2x.png</string>
+	</array>
+	<key>UIPrerenderedIcon</key>
+	<false/>
 </dict>
 </plist>
