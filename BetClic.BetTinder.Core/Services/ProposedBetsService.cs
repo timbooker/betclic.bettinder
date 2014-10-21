@@ -6,7 +6,6 @@ namespace BetClic.BetTinder.Core.Services
     public class ProposedBetsService : IProposedBetsService
     {
         private string[] imageNames;
-        int i = 0;
 
         public ProposedBetsService()
         {
@@ -19,10 +18,8 @@ namespace BetClic.BetTinder.Core.Services
             {
                 Name = Guid.NewGuid().ToString().Substring(0, 6),
                 Odds = new Random().NextDouble(),
-                ImageName = imageNames[i % 5]
+                ImageName = imageNames[new Random().Next(0, 5)]
             };
-
-            i++;
         }
     }
 }

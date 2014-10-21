@@ -53,20 +53,38 @@ namespace BetClic.BetTinder.iOS.Views
                 View.AddSubview(_nextBet);
             }
 
+            using (var image = UIImage.FromFile("150x150.gif"))
+            {
+                _currentBet = new UIImageView(image) {Frame = new RectangleF(100, 100, 150, 150)};
+                _currentBet.UserInteractionEnabled = true;
+                View.AddSubview(_currentBet);
+            }
 
             var screenBounds = UIScreen.MainScreen.Bounds;
+
             // Load Buttons Part
             var acceptButton = UIButton.FromType(UIButtonType.Custom);
             acceptButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
-            //         acceptButton.TouchUpInside += (sender, ae) => { AcceptBet(); };
-            acceptButton.Center = new PointF(50, 450);
-            acceptButton.SizeThatFits(new SizeF(50, 50));
+
+            var buttonWidth = 50;
+            var buttonHeight = 50;
+            acceptButton.Frame = new RectangleF(
+                10,
+                300,
+                buttonWidth,
+                buttonHeight);
+
+            View.AddSubview(acceptButton);
 
             var rejectButton = UIButton.FromType(UIButtonType.Custom);
             rejectButton.SetImage(UIImage.FromFile("reject.png"), UIControlState.Normal);
-            //          rejectButton.TouchUpInside += (sender, ae) => { RejectBet(); };
-            rejectButton.Center = new PointF(150, 450);
-            rejectButton.SizeThatFits(new SizeF(50, 50));
+            rejectButton.Frame = new RectangleF(
+                150,
+                300,
+                buttonWidth,
+                buttonHeight);
+
+            View.AddSubview(rejectButton);
 
             var plusButton = UIButton.FromType(UIButtonType.Custom);
             acceptButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
@@ -102,6 +120,8 @@ namespace BetClic.BetTinder.iOS.Views
             set.Bind(userName).To(vm => vm.UserAccount.UserName);
             set.Bind(uiLabelBetAmount).To(vm => vm.BetAmount);
             set.Bind(balance).To(vm => vm.UserAccount.Balance);
+            set.Bind(rejectButton).To(vm => vm.RejectBet);
+            set.Bind(acceptButton).To(vm => vm.AcceptBet);
             set.Apply();
 
             var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());
