@@ -4,11 +4,12 @@ namespace BetClic.BetTinder.Core.ViewModels
 {
     public class StatsViewModel : BaseViewModel
     {
-        private readonly Bet _bet;
-
-        public StatsViewModel()
+        
+        public void Init(Bet bet)
         {
-            // _bet = bet;
+            Bet = bet;
         }
+
+        public Bet Bet { get; set; }
     }
 }
