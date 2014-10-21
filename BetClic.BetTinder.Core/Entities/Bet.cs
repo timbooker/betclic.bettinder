@@ -4,6 +4,6 @@
     {
         public string Name { get; set; }
         public double Odds { get; set; }
-        public byte[] Image { get; set; }
+        public string ImageName { get; set; }
     }
 }

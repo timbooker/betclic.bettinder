@@ -44,13 +44,7 @@ namespace BetClic.BetTinder.iOS.Views
 
             base.ViewDidLoad();
 
-            UILabel uiLabel = new UILabel(new RectangleF(10, 10, 300, 40));
-            View.AddSubview(uiLabel);
-            UITextField uiTextField = new UITextField(new RectangleF(10, 50, 300, 40));
-            View.AddSubview(uiTextField);
 
-            UILabel userName = new UILabel(new RectangleF(10, 200, 300, 40));
-            View.AddSubview(userName);
 
 
             using (var image = UIImage.FromFile("150x150.gif"))
@@ -76,11 +70,24 @@ namespace BetClic.BetTinder.iOS.Views
 
             HandleMovement();
 
+            var x = 123123;
+            var y = x;
             _currentBet.AddGestureRecognizer(_panGesture);
+
+            var uiLabel = new UILabel(new RectangleF(10, 10, 300, 40));
+            View.AddSubview(uiLabel);
+            var uiTextField = new UITextField(new RectangleF(10, 50, 300, 40));
+            View.AddSubview(uiTextField);
+            var userName = new UILabel(new RectangleF(10, 200, 300, 40));
+            View.AddSubview(userName);
+            var balance = new UILabel(new RectangleF(10, 250, 300, 40));
+            View.AddSubview(balance);
 
             var set = this.CreateBindingSet<FirstView, FirstViewModel>();
             set.Bind(uiLabel).To(vm => vm.Bet.Name);
             set.Bind(uiTextField).To(vm => vm.Bet.Odds);
+            set.Bind(userName).To(vm => vm.UserAccount.UserName);
+            set.Bind(balance).To(vm => vm.UserAccount.Balance);
             set.Apply();
 
             var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());
@@ -145,23 +152,23 @@ namespace BetClic.BetTinder.iOS.Views
 
         private void AcceptBet()
         {
-            // awkward, but required to break it a little to get the goodness out
-            var vm = ViewModel as FirstViewModel;
-            if (vm != null) vm.AcceptBetCommand();
-            ShowUIAlert("Bet Accepted", ACCEPT_MESSAGE);
+                        // awkward, but required to break it a little to get the goodness out
+                        var vm = ViewModel as FirstViewModel;
+                        if (vm != null) vm.AcceptBetCommand();
+                        ShowUIAlert("Bet Accepted", ACCEPT_MESSAGE);
 
-        }
+                    }
 
         private void RejectBet()
-        {
-            // add to rejected bet pile and pop a new one
-            var vm = ViewModel as FirstViewModel;
-            if (vm != null) vm.RejectBetCommand();
-            ShowUIAlert("Bet Rejected", REJECT_MESSAGE);
-        }
+                    {
+                        // add to rejected bet pile and pop a new one
+                        var vm = ViewModel as FirstViewModel;
+                        if (vm != null) vm.RejectBetCommand();
+                        ShowUIAlert("Bet Rejected", REJECT_MESSAGE);
+                    }
 
         /// <summary>
-        /// Show UI Alert to User
+        /// Show UI Alert to UserAccount
         /// </summary>
         /// <param name="title">Alert Title</param>
         /// <param name="message">Alert Message</param>
