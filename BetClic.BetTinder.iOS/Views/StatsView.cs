@@ -1,9 +1,15 @@
 using System.Drawing;
+using BetClic.BetTinder.Core.ViewModels;
+using Cirrious.MvvmCross.Binding.BindingContext;
+using Cirrious.MvvmCross.Binding.Touch.Views;
+using Cirrious.MvvmCross.Touch.Views;
+using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace BetClic.BetTinder.iOS.Views
 {
-    public class StatsView : BaseView
+    [Register("StatsView")]
+    public class StatsView : MvxTableViewController
     {
         public StatsView()
         {
@@ -21,6 +27,13 @@ namespace BetClic.BetTinder.iOS.Views
 
             this.View = new UIView { BackgroundColor = UIColor.Red };
             base.ViewDidLoad();
+
+            var source = new MvxStandardTableViewSource(TableView, "HomeTeam;AwayTeam;HomeTeamScore;AwayTeamScore");
+            TableView.Source = source;
+
+            var set = this.CreateBindingSet<StatsView, StatsViewModel>();
+            set.Bind(source).To(vm => vm.Bet.PreviousResults);
+            set.Apply();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BetClic.BetTinder.Core.Services;
 
 namespace BetClic.BetTinder.Core.Entities
 {
@@ -12,6 +13,7 @@ namespace BetClic.BetTinder.Core.Entities
 
         public decimal Balance { get; set; }
 
+        public IEnumerable<Bet> PreviousBets { get; set; }
 
     }
 }
