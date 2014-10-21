@@ -49,6 +49,9 @@ namespace BetClic.BetTinder.iOS.Views
         private MvxImageViewLoader _mvxNextImageViewLoader;
         private UILabel _betOdds;
         private UILabel _betName;
+        private UILabel _betType;
+        private UILabel _betTypeDescription;
+
         private UILabel _lblUserBalance;
         private UIView _currentBetView;
         private float sideHeights;
@@ -113,6 +116,8 @@ namespace BetClic.BetTinder.iOS.Views
             set.Bind(_mvxNextImageViewLoader).To(vm => vm.NextBet.ImageName);
             set.Bind(_betName).To(vm => vm.Bet.Description);
             set.Bind(_betOdds).To(vm => vm.Bet.Odds);
+            set.Bind(_betType).To(vm => vm.Bet.BetType);
+            set.Bind(_betTypeDescription).To(vm => vm.Bet.BetTypeDescription);
             set.Apply();
 
 
@@ -193,14 +198,37 @@ namespace BetClic.BetTinder.iOS.Views
 
             _betDetails = new UIView() { BackgroundColor = new UIColor(0, 0, 0, 0.5f) };
             _betDetails.Frame = new RectangleF(5, detailsTop, _bounds.Width - 10, sideHeights);
+            
+            // Add Bet Name
+            var yTextTop = 2f;
+            var textWidth = _bounds.Width - 5;
+            var textHeight = sideHeights/4;
             _betName = new UILabel();
             _betName.TextColor = UIColor.White;
-            _betName.Frame = new RectangleF(5, 2, 300, 15);
+            _betName.Font = UIFont.FromName(_betName.Font.Name, 12f);
+            _betName.Frame = new RectangleF(5, yTextTop, textWidth, textHeight);
             _betDetails.AddSubview(_betName);
 
+            yTextTop += textHeight;
+
+            _betType = new UILabel();
+            _betType.Frame = new RectangleF(5, yTextTop, textWidth, textHeight);
+            _betType.Font = UIFont.FromName(_betOdds.Font.Name, 10f);
+            _betType.TextColor = UIColor.White;
+            _betDetails.AddSubview(_betType);
+            yTextTop += textHeight;
+
+            _betTypeDescription = new UILabel();
+            _betTypeDescription.Frame = new RectangleF(20, yTextTop, 100, textHeight);
+            _betTypeDescription.Font = UIFont.FromName(_betOdds.Font.Name, 10f);
+            _betTypeDescription.TextColor = UIColor.White;
+            _betDetails.AddSubview(_betTypeDescription);
+
             _betOdds = new UILabel();
-            _betOdds.Frame = new RectangleF(5, 30, 300, 20);
-            _betOdds.TextColor = UIColor.White;
+            _betOdds.Frame = new RectangleF(125, yTextTop, 35, textHeight);
+            _betOdds.Font = UIFont.FromName(_betOdds.Font.Name, 10f);
+            _betOdds.TextColor = UIColor.Red;
+            _betOdds.BackgroundColor = UIColor.White;
             _betDetails.AddSubview(_betOdds);
 
             _currentBet.Layer.BorderColor = new CGColor(255, 255, 255);
