@@ -32,6 +32,9 @@ namespace BetClic.BetTinder.Core.ViewModels
             if (_bet == null)
                 _bet = _proposedBetsService.GetNextBet();
 
+            if (_nextBet == null)
+                _nextBet = _proposedBetsService.GetNextBet();
+
         }
 
         private Bet _bet;
@@ -117,11 +120,6 @@ namespace BetClic.BetTinder.Core.ViewModels
             var nextBet = _proposedBetsService.GetNextBet();
             NextBet = nextBet;
 
-        }
-
-        public void ShowAlertPopupCommand()
-        {
-            /// At the moment not used and done directly in the IOS View   
         }
     }
 }
