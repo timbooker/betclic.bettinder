@@ -69,6 +69,7 @@ namespace BetClic.BetTinder.iOS.Views
 
             CreateTopBar();
 
+
             _nextBet = new UIImageView() { Frame = new RectangleF(100, 100, 175, 175) };
             View.AddSubview(_nextBet);
 
@@ -97,7 +98,7 @@ namespace BetClic.BetTinder.iOS.Views
             set.Bind(uiLabel).To(vm => vm.Bet.HomeTeam);
             set.Bind(uiTextField).To(vm => vm.Bet.Odds);
             set.Bind(userName).To(vm => vm.UserAccount.UserName);
-            set.Bind(_lblUserBalance).To(vm => vm.UserAccount.UserBalance);
+            set.Bind(_lblUserBalance).To(vm => vm.UserAccount.Balance);
             set.Bind(_btnReject).To(vm => vm.RejectBet);
             set.Bind(_btnAccept).To(vm => vm.AcceptBet);
             set.Bind(_btnIncreaseBet).To(vm => vm.IncrementBet);
@@ -112,6 +113,8 @@ namespace BetClic.BetTinder.iOS.Views
             var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());
             View.AddGestureRecognizer(tap);
 
+            var tap1 = new UITapGestureRecognizer(() => _uiTextFieldBetAmount.ResignFirstResponder());
+            View.AddGestureRecognizer(tap1);
 
             WireViewModelEvents();
         }
@@ -164,6 +167,11 @@ namespace BetClic.BetTinder.iOS.Views
             }
         }
 
+        private void CreateBetImagePart()
+        {
+            
+        }
+
         /// <summary>
         /// Create Bottom Area
         /// </summary>
@@ -195,6 +203,7 @@ namespace BetClic.BetTinder.iOS.Views
                 _btnStats.SetImage(image, UIControlState.Normal);
                 _btnStats.Frame = new RectangleF(sideWidths*3, yTop, sideWidths, sideHeights);
                 View.AddSubview(_btnStats);
+
             }
 
             // Add Accept Button
@@ -231,8 +240,10 @@ namespace BetClic.BetTinder.iOS.Views
             // Bet Amount textbox
             _uiTextFieldBetAmount =
                 new UITextField(new RectangleF(betPartStartX, yTop, betPartWidth, betPartHeight*2));
-            _uiTextFieldBetAmount.KeyboardType = UIKeyboardType.NumberPad;
+            _uiTextFieldBetAmount.KeyboardType = UIKeyboardType.DecimalPad;
+
             View.AddSubview(_uiTextFieldBetAmount);
+
 
             yTop += (betPartHeight*2);
 
