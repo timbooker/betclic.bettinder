@@ -92,6 +92,14 @@ namespace BetClic.BetTinder.iOS.Views
 
             var uiLabel = new UILabel(new RectangleF(10, 10, 300, 40));
             View.AddSubview(uiLabel);
+
+            var segmentControl = new UISegmentedControl();
+            segmentControl.Frame = new RectangleF(20, 20, 280, 40);
+            View.AddSubview(segmentControl);
+
+            var uiLabelBetAmount = new UILabel(new RectangleF(10, 90, 300, 40));
+            View.AddSubview(uiLabelBetAmount);
+
             var uiTextField = new UITextField(new RectangleF(10, 50, 300, 40));
             View.AddSubview(uiTextField);
             var userName = new UILabel(new RectangleF(10, 200, 300, 40));
@@ -99,10 +107,15 @@ namespace BetClic.BetTinder.iOS.Views
             var balance = new UILabel(new RectangleF(10, 250, 300, 40));
             View.AddSubview(balance);
 
+            segmentControl.InsertSegment("-", -1, true);
+            segmentControl.InsertSegment("+", 1, true);
+            segmentControl.SelectedSegment = 1;
+
             var set = this.CreateBindingSet<FirstView, FirstViewModel>();
             set.Bind(uiLabel).To(vm => vm.Bet.Name);
             set.Bind(uiTextField).To(vm => vm.Bet.Odds);
             set.Bind(userName).To(vm => vm.UserAccount.UserName);
+            set.Bind(uiLabelBetAmount).To(vm => vm.BetAmount);
             set.Bind(balance).To(vm => vm.UserAccount.Balance);
             set.Bind(rejectButton).To(vm => vm.RejectBet);
             set.Bind(acceptButton).To(vm => vm.AcceptBet);
