@@ -68,6 +68,16 @@ namespace BetClic.BetTinder.iOS.Views
             rejectButton.Center = new PointF(150, 450);
             rejectButton.SizeThatFits(new SizeF(50, 50));
 
+            var plusButton = UIButton.FromType(UIButtonType.Custom);
+            acceptButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
+            acceptButton.Center = new PointF(90, 450);
+            acceptButton.SizeThatFits(new SizeF(50, 50));
+
+            var minusButton = UIButton.FromType(UIButtonType.Custom);
+            acceptButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
+            acceptButton.Center = new PointF(90, 490);
+            acceptButton.SizeThatFits(new SizeF(50, 50));
+
             HandleMovement();
 
             _currentBet.AddGestureRecognizer(_panGesture);
@@ -75,9 +85,6 @@ namespace BetClic.BetTinder.iOS.Views
             var uiLabel = new UILabel(new RectangleF(10, 10, 300, 40));
             View.AddSubview(uiLabel);
 
-            var segmentControl = new UISegmentedControl();
-            segmentControl.Frame = new RectangleF(20, 20, 280, 40);
-            View.AddSubview(segmentControl);
 
             var uiLabelBetAmount = new UILabel(new RectangleF(10, 90, 300, 40));
             View.AddSubview(uiLabelBetAmount);
@@ -88,10 +95,6 @@ namespace BetClic.BetTinder.iOS.Views
             View.AddSubview(userName);
             var balance = new UILabel(new RectangleF(10, 250, 300, 40));
             View.AddSubview(balance);
-
-            segmentControl.InsertSegment("-", -1, true);
-            segmentControl.InsertSegment("+", 1, true);
-            segmentControl.SelectedSegment = 1;
 
             var set = this.CreateBindingSet<FirstView, FirstViewModel>();
             set.Bind(uiLabel).To(vm => vm.Bet.Name);
