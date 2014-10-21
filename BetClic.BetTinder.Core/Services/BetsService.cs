@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 namespace BetClic.BetTinder.Core.Services
 {
-    public class ProposedBetsService : IProposedBetsService
+    public class BetsService : IBetsService
     {
-        private string[] imageNames;
+        private List<Bet> acceptedBets;
+        private string[] imageNames; 
 
-        public ProposedBetsService()
+        public BetsService()
         {
+            acceptedBets = new List<Bet>();
             imageNames = new string[]{ "pic1", "pic2", "pic3", "pic4", "pic5" };
         }
 
@@ -20,6 +22,16 @@ namespace BetClic.BetTinder.Core.Services
                 Odds = new Random().NextDouble(),
                 ImageName = imageNames[new Random().Next(0, 5)]
             };
+        }
+
+        public List<Bet> GetAcceptedBets()
+        {
+            return acceptedBets;
+        }
+
+        public void AddAcceptedBet(Bet acceptedBet)
+        {
+            acceptedBets.Add(acceptedBet);
         }
     }
 }

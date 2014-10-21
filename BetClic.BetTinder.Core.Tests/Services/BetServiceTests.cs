@@ -5,9 +5,9 @@ using NUnit.Framework;
 namespace BetClic.BetTinder.Core.Tests
 {
     [TestFixture]
-    public class ProposedBetServiceTests
+    public class BetServiceTests
     {
-        ProposedBetsService service = new ProposedBetsService();
+        BetsService service = new BetsService();
 
         [Test]
         public void given_request_for_data_returns_something()
