@@ -32,7 +32,7 @@ namespace BetClic.BetTinder.iOS.Views
         private UIImageView _currentBet;
         private UIImageView _nextBet;
         private UIPanGestureRecognizer _panGesture;
-        private UITextField uiTextFieldBetAmount = new UITextField(new RectangleF(10, 50, 300, 40));
+        private UITextField _uiTextFieldBetAmount;
 
         /// <summary>
         /// Views the did load.
@@ -42,22 +42,24 @@ namespace BetClic.BetTinder.iOS.Views
         /// </summary>
         public override void ViewDidLoad()
         {
-            WireViewModelEvents();
             this.View = new UIView { BackgroundColor = UIColor.White };
             base.ViewDidLoad();
 
-            using (var image = UIImage.FromFile("150x150.gif"))
+            _currentBet = new UIImageView() { Frame = new RectangleF(100, 100, 150, 150) };
+            _currentBet.UserInteractionEnabled = true;
+            
+            
+            _uiTextFieldBetAmount = new UITextField(new RectangleF(10, 320, 300, 40));
+            using (var image = UIImage.FromFile("pic2.jpg"))
             {
-                _nextBet = new UIImageView(image) { Frame = new RectangleF(100, 100, 150, 150) };
+                _nextBet = new UIImageView(image) { Frame = new RectangleF(100, 100, 175, 175) };
                 View.AddSubview(_nextBet);
-            }
+            } 
+            
+            var mvxImageViewLoader = new MvxImageViewLoader(() => _currentBet);
+            View.AddSubview(_currentBet);
+            
 
-            using (var image = UIImage.FromFile("150x150.gif"))
-            {
-                _currentBet = new UIImageView(image) { Frame = new RectangleF(100, 100, 150, 150) };
-                _currentBet.UserInteractionEnabled = true;
-                View.AddSubview(_currentBet);
-            }
 
             var screenBounds = UIScreen.MainScreen.Bounds;
 
@@ -86,22 +88,26 @@ namespace BetClic.BetTinder.iOS.Views
             View.AddSubview(rejectButton);
 
 
-            uiTextFieldBetAmount.KeyboardType = UIKeyboardType.NumberPad;
-            View.AddSubview(uiTextFieldBetAmount);
+            _uiTextFieldBetAmount.KeyboardType = UIKeyboardType.NumberPad;
+            View.AddSubview(_uiTextFieldBetAmount);
 
             var plusButton = UIButton.FromType(UIButtonType.Custom);
             plusButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
-            plusButton.Center = new PointF(90, 450);
-            plusButton.SizeThatFits(new SizeF(50, 50));
-            plusButton.TouchUpInside += plusButton_TouchUpInside;
+            plusButton.Frame = new RectangleF(
+                    50,
+                    320,
+                    buttonWidth,
+                    buttonHeight);
             View.AddSubview(plusButton);
 
             var minusButton = UIButton.FromType(UIButtonType.Custom);
-            minusButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
-            minusButton.Center = new PointF(90, 490);
-            minusButton.SizeThatFits(new SizeF(50, 50));
-            minusButton.TouchUpInside += minusButton_TouchUpInside;
-            View.AddSubview(acceptButton);
+            minusButton.SetImage(UIImage.FromFile("reject.png"), UIControlState.Normal);
+            minusButton.Frame = new RectangleF(
+                     90,
+                     320,
+                     buttonWidth,
+                     buttonHeight);
+            View.AddSubview(minusButton);
 
             HandleMovement();
 
@@ -109,7 +115,6 @@ namespace BetClic.BetTinder.iOS.Views
 
             var uiLabel = new UILabel(new RectangleF(10, 10, 300, 40));
             View.AddSubview(uiLabel);
-
             var uiTextField = new UITextField(new RectangleF(10, 50, 300, 40));
             View.AddSubview(uiTextField);
             var userName = new UILabel(new RectangleF(10, 200, 300, 40));
@@ -124,35 +129,27 @@ namespace BetClic.BetTinder.iOS.Views
             set.Bind(balance).To(vm => vm.UserAccount.Balance);
             set.Bind(rejectButton).To(vm => vm.RejectBet);
             set.Bind(acceptButton).To(vm => vm.AcceptBet);
-            set.Bind(uiTextFieldBetAmount).To(vm => vm.BetAmount);
-
+            set.Bind(plusButton).To(vm => vm.IncrementBet);
+            set.Bind(minusButton).To(vm => vm.DecrementBet);
+            set.Bind(_uiTextFieldBetAmount).To(vm => vm.BetAmount);
+            set.Bind(mvxImageViewLoader).For(x => x.ImageUrl).To(vm => vm.Bet.ImageName);
             set.Apply();
 
             var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());
             View.AddGestureRecognizer(tap);
+
+
+            WireViewModelEvents();
         }
 
-
-        private decimal GetDecimalValueFromString(string stringVal)
+        /// <summary>
+        /// Wire View Model Events
+        /// </summary>
+        private void WireViewModelEvents()
         {
-            try
-            {
-                return Convert.ToDecimal(stringVal);
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
-        }
-
-        void minusButton_TouchUpInside(object sender, System.EventArgs e)
-        {
-            uiTextFieldBetAmount.Text = (GetDecimalValueFromString(uiTextFieldBetAmount.Text) - 5).ToString();
-        }
-
-        void plusButton_TouchUpInside(object sender, System.EventArgs e)
-        {
-            uiTextFieldBetAmount.Text = (GetDecimalValueFromString(uiTextFieldBetAmount.Text) + 5).ToString();
+            var vm = (FirstViewModel)this.ViewModel;
+            vm.OnBetAccepted += (sender, args) => { AcceptBetHandler(sender, args); };
+            vm.OnBetRejected += (sender, args) => { RejectedBetHandler(sender, args); };
         }
 
         private void HandleMovement()

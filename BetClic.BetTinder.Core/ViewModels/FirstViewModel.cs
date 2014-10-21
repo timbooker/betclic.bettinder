@@ -80,8 +80,6 @@ namespace BetClic.BetTinder.Core.ViewModels
 
         private readonly IUserAccountService _userAccountService;
 
-
-
         /// <summary>
         ///  Backing field for my command.
         /// </summary>
@@ -92,6 +90,9 @@ namespace BetClic.BetTinder.Core.ViewModels
         }
 
         private ICommand _rejectCommand;
+        private ICommand _incrementBetTotalCommand;
+        private ICommand _decrementBetCommand;
+
         /// <summary>
         /// Reject Bet Command
         /// </summary>
@@ -103,6 +104,18 @@ namespace BetClic.BetTinder.Core.ViewModels
             }
         }
 
+        public ICommand IncrementBet { get { return this._incrementBetTotalCommand ?? (this._incrementBetTotalCommand = new MvxCommand(IncrementBetTotal)); } }
+        public ICommand DecrementBet { get { return this._decrementBetCommand ?? (this._decrementBetCommand = new MvxCommand(DecrementBetTotal)); } }
+
+        public void IncrementBetTotal()
+        {
+            BetAmount += 5;
+        }
+
+        public void DecrementBetTotal()
+        {
+            BetAmount -= 5;
+        }
 
         /// <summary>
         /// Show the view model.
@@ -121,6 +134,7 @@ namespace BetClic.BetTinder.Core.ViewModels
                 var nextBet = _proposedBetsService.GetNextBet();
                 NextBet = nextBet;
 
+            // if funds are sufficient
             if (this.OnBetAccepted != null)
             {
                 this.OnBetAccepted(this, null);
