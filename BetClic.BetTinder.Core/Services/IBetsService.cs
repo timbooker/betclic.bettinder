@@ -5,8 +5,11 @@ using System.Threading.Tasks;
 
 namespace BetClic.BetTinder.Core.Services
 {
-    public interface IProposedBetsService
+    public interface IBetsService
     {
         Bet GetNextBet();
+        List<Bet> GetAcceptedBets();
+        void AddAcceptedBet(Bet acceptedBet);
+
     }
 }
