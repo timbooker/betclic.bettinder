@@ -16,7 +16,7 @@ namespace BetClic.BetTinder.Core.Tests
             var result = service.GetNextBet();
 
             // then 
-            Assert.That(result.Name, Is.Not.Empty);
+            Assert.That(result.HomeTeam, Is.Not.Empty);
         }
 
         [Test]

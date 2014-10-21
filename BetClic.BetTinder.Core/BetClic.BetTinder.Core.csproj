@@ -34,6 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
+    <Compile Include="Entities\Clubs.cs" />
     <Compile Include="Entities\Message.cs" />
     <Compile Include="Entities\Bet.cs" />
     <Compile Include="Entities\UserAccount.cs" />
