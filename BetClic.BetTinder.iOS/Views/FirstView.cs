@@ -4,7 +4,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Binding.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
@@ -31,7 +30,7 @@ namespace BetClic.BetTinder.iOS.Views
         private UIImageView _currentBet;
         private UIImageView _nextBet;
         private UIPanGestureRecognizer _panGesture;
-        private UITextField uiTextFieldBetAmount = new UITextField(new RectangleF(10, 50, 300, 40));
+        private UITextField _uiTextFieldBetAmount;
 
         /// <summary>
         /// Views the did load.
@@ -46,7 +45,7 @@ namespace BetClic.BetTinder.iOS.Views
             base.ViewDidLoad();
 
 
-
+            _uiTextFieldBetAmount = new UITextField(new RectangleF(10, 320, 300, 40));
 
             using (var image = UIImage.FromFile("150x150.gif"))
             {
@@ -88,22 +87,30 @@ namespace BetClic.BetTinder.iOS.Views
             View.AddSubview(rejectButton);
 
 
-            uiTextFieldBetAmount.KeyboardType = UIKeyboardType.NumberPad;
-            View.AddSubview(uiTextFieldBetAmount);
+            _uiTextFieldBetAmount.KeyboardType = UIKeyboardType.NumberPad;
+            View.AddSubview(_uiTextFieldBetAmount);
 
             var plusButton = UIButton.FromType(UIButtonType.Custom);
             plusButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
             plusButton.Center = new PointF(90, 450);
             plusButton.SizeThatFits(new SizeF(50, 50));
-            plusButton.TouchUpInside += plusButton_TouchUpInside;
+            plusButton.Frame = new RectangleF(
+                    50,
+                    320,
+                    buttonWidth,
+                    buttonHeight);
             View.AddSubview(plusButton);
 
             var minusButton = UIButton.FromType(UIButtonType.Custom);
-            minusButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
+            minusButton.SetImage(UIImage.FromFile("reject.png"), UIControlState.Normal);
             minusButton.Center = new PointF(90, 490);
             minusButton.SizeThatFits(new SizeF(50, 50));
-            minusButton.TouchUpInside += minusButton_TouchUpInside;
-            View.AddSubview(acceptButton);
+            minusButton.Frame = new RectangleF(
+                     90,
+                     320,
+                     buttonWidth,
+                     buttonHeight);
+            View.AddSubview(plusButton);
 
             HandleMovement();
 
@@ -126,7 +133,9 @@ namespace BetClic.BetTinder.iOS.Views
             set.Bind(balance).To(vm => vm.UserAccount.Balance);
             set.Bind(rejectButton).To(vm => vm.RejectBet);
             set.Bind(acceptButton).To(vm => vm.AcceptBet);
-            set.Bind(uiTextFieldBetAmount).To(vm => vm.BetAmount);
+            set.Bind(plusButton).To(vm => vm.IncrementBet);
+            set.Bind(minusButton).To(vm => vm.DecrementBet);
+            set.Bind(_uiTextFieldBetAmount).To(vm => vm.BetAmount);
 
             set.Apply();
 
@@ -134,28 +143,6 @@ namespace BetClic.BetTinder.iOS.Views
             View.AddGestureRecognizer(tap);
         }
 
-
-        private decimal GetDecimalValueFromString(string stringVal)
-        {
-            try
-            {
-                return Convert.ToDecimal(stringVal);
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
-        }
-
-        void minusButton_TouchUpInside(object sender, System.EventArgs e)
-        {
-            uiTextFieldBetAmount.Text = (GetDecimalValueFromString(uiTextFieldBetAmount.Text) - 5).ToString();
-        }
-
-        void plusButton_TouchUpInside(object sender, System.EventArgs e)
-        {
-            uiTextFieldBetAmount.Text = (GetDecimalValueFromString(uiTextFieldBetAmount.Text) + 5).ToString();
-        }
 
         private void HandleMovement()
         {
