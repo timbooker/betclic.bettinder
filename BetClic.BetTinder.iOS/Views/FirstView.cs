@@ -4,6 +4,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Binding.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
@@ -18,6 +19,7 @@ namespace BetClic.BetTinder.iOS.Views
     using Core.ViewModels;
     using MonoTouch.Foundation;
     using MonoTouch.UIKit;
+    using Cirrious.MvvmCross.Plugins.Messenger;
 
     /// <summary>
     /// Defines the FirstView type.
@@ -41,24 +43,23 @@ namespace BetClic.BetTinder.iOS.Views
         public override void ViewDidLoad()
         {
             this.View = new UIView { BackgroundColor = UIColor.White };
-
             base.ViewDidLoad();
 
-
+            _currentBet = new UIImageView() { Frame = new RectangleF(100, 100, 150, 150) };
+            _currentBet.UserInteractionEnabled = true;
+            
+            
             _uiTextFieldBetAmount = new UITextField(new RectangleF(10, 320, 300, 40));
-
-            using (var image = UIImage.FromFile("150x150.gif"))
+            using (var image = UIImage.FromFile("pic2.jpg"))
             {
-                _nextBet = new UIImageView(image) { Frame = new RectangleF(100, 100, 150, 150) };
+                _nextBet = new UIImageView(image) { Frame = new RectangleF(100, 100, 175, 175) };
                 View.AddSubview(_nextBet);
-            }
+            } 
+            
+            var mvxImageViewLoader = new MvxImageViewLoader(() => _currentBet);
+            View.AddSubview(_currentBet);
+            
 
-            using (var image = UIImage.FromFile("150x150.gif"))
-            {
-                _currentBet = new UIImageView(image) {Frame = new RectangleF(100, 100, 150, 150)};
-                _currentBet.UserInteractionEnabled = true;
-                View.AddSubview(_currentBet);
-            }
 
             var screenBounds = UIScreen.MainScreen.Bounds;
 
@@ -92,8 +93,6 @@ namespace BetClic.BetTinder.iOS.Views
 
             var plusButton = UIButton.FromType(UIButtonType.Custom);
             plusButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
-            plusButton.Center = new PointF(90, 450);
-            plusButton.SizeThatFits(new SizeF(50, 50));
             plusButton.Frame = new RectangleF(
                     50,
                     320,
@@ -103,14 +102,12 @@ namespace BetClic.BetTinder.iOS.Views
 
             var minusButton = UIButton.FromType(UIButtonType.Custom);
             minusButton.SetImage(UIImage.FromFile("reject.png"), UIControlState.Normal);
-            minusButton.Center = new PointF(90, 490);
-            minusButton.SizeThatFits(new SizeF(50, 50));
             minusButton.Frame = new RectangleF(
                      90,
                      320,
                      buttonWidth,
                      buttonHeight);
-            View.AddSubview(plusButton);
+            View.AddSubview(minusButton);
 
             HandleMovement();
 
@@ -118,7 +115,6 @@ namespace BetClic.BetTinder.iOS.Views
 
             var uiLabel = new UILabel(new RectangleF(10, 10, 300, 40));
             View.AddSubview(uiLabel);
-
             var uiTextField = new UITextField(new RectangleF(10, 50, 300, 40));
             View.AddSubview(uiTextField);
             var userName = new UILabel(new RectangleF(10, 200, 300, 40));
@@ -136,13 +132,25 @@ namespace BetClic.BetTinder.iOS.Views
             set.Bind(plusButton).To(vm => vm.IncrementBet);
             set.Bind(minusButton).To(vm => vm.DecrementBet);
             set.Bind(_uiTextFieldBetAmount).To(vm => vm.BetAmount);
-
+            set.Bind(mvxImageViewLoader).For(x => x.ImageUrl).To(vm => vm.Bet.ImageName);
             set.Apply();
 
             var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());
             View.AddGestureRecognizer(tap);
+
+
+            WireViewModelEvents();
         }
 
+        /// <summary>
+        /// Wire View Model Events
+        /// </summary>
+        private void WireViewModelEvents()
+        {
+            var vm = (FirstViewModel)this.ViewModel;
+            vm.OnBetAccepted += (sender, args) => { AcceptBetHandler(sender, args); };
+            vm.OnBetRejected += (sender, args) => { RejectedBetHandler(sender, args); };
+        }
 
         private void HandleMovement()
         {
@@ -205,8 +213,6 @@ namespace BetClic.BetTinder.iOS.Views
                         // awkward, but required to break it a little to get the goodness out
                         var vm = ViewModel as FirstViewModel;
                         if (vm != null) vm.AcceptBetCommand();
-                        ShowUIAlert("Bet Accepted", ACCEPT_MESSAGE);
-
                     }
 
         private void RejectBet()
@@ -214,8 +220,17 @@ namespace BetClic.BetTinder.iOS.Views
                         // add to rejected bet pile and pop a new one
                         var vm = ViewModel as FirstViewModel;
                         if (vm != null) vm.RejectBetCommand();
+        }
+
+        private void RejectedBetHandler(object o, EventArgs e)
+        {
                         ShowUIAlert("Bet Rejected", REJECT_MESSAGE);
                     }
+
+        private void AcceptBetHandler(object o, EventArgs e)
+        {
+            ShowUIAlert("Bet Accepted", ACCEPT_MESSAGE);
+        }
 
         /// <summary>
         /// Show UI Alert to UserAccount
