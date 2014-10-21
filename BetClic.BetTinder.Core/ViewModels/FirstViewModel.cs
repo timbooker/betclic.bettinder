@@ -8,6 +8,7 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.Runtime.Versioning;
 using BetClic.BetTinder.Core.Entities;
 using BetClic.BetTinder.Core.Services;
 using Cirrious.MvvmCross.Plugins.Messenger;
@@ -26,6 +27,7 @@ namespace BetClic.BetTinder.Core.ViewModels
         private readonly IUserAccountService _userAccountService;
         public EventHandler OnBetAccepted;
         public EventHandler OnBetRejected;
+        public EventHandler InsufficientFunds;
 
         private Bet _bet;
         private Bet _nextBet;
@@ -125,21 +127,29 @@ namespace BetClic.BetTinder.Core.ViewModels
         public void AcceptBetCommand()
         {
             // validate bet
-            var bet = NextBet;
-            Bet = bet;
-
-            var user = _userAccountService.DeductBalance(_userAccount, _betAmount);
-            UserAccount = user;
-
-            var nextBet = _betsService.GetNextBet();
-            NextBet = nextBet;
-
-            // if funds are sufficient
-            if (this.OnBetAccepted != null)
+            if (_userAccount.Balance >= _betAmount)
             {
-                this.OnBetAccepted(this, null);
-            }
+                var bet = NextBet;
+                Bet = bet;
+                var user = _userAccountService.DeductBalance(_userAccount, _betAmount);
+                UserAccount = user;
 
+                var nextBet = _proposedBetsService.GetNextBet();
+                NextBet = nextBet;
+
+                if (this.OnBetAccepted != null)
+                {
+                    this.OnBetAccepted(this, null);
+                }
+
+            }
+            else
+            {
+                if (this.InsufficientFunds != null)
+                {
+                    this.InsufficientFunds(this, null);
+                }
+            }
 
             // mimicks sending to server sort of kinda maybe
             //if (PluginLoader.Instance.SendMessage("dsadjsalkd"))

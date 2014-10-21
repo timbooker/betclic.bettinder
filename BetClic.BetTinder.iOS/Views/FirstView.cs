@@ -28,7 +28,8 @@ namespace BetClic.BetTinder.iOS.Views
     public class FirstView : BaseView
     {
         private readonly string ACCEPT_MESSAGE = "Your bet has been Submitted. Good Luck!";
-        private readonly string REJECT_MESSAGE = "Bet Rejected";
+        private readonly string INSUFFICIENT_FUNDS_MESSAGE = "Woopsie.. You do not have sufficient funnds.";
+        private readonly string REJECT_MESSAGE = "Bet Rejected.";
         private UIImageView _currentBet;
         private UIImageView _nextBet;
         private UIPanGestureRecognizer _panGesture;
@@ -150,6 +151,7 @@ namespace BetClic.BetTinder.iOS.Views
             var vm = (FirstViewModel)this.ViewModel;
             vm.OnBetAccepted += (sender, args) => { AcceptBetHandler(sender, args); };
             vm.OnBetRejected += (sender, args) => { RejectedBetHandler(sender, args); };
+            vm.InsufficientFunds += (sender, args) => { InsufficientFundsHandler(sender, args); };
         }
 
         private void HandleMovement()
@@ -227,6 +229,10 @@ namespace BetClic.BetTinder.iOS.Views
                         ShowUIAlert("Bet Rejected", REJECT_MESSAGE);
                     }
 
+        private void InsufficientFundsHandler(object o, EventArgs e)
+        {
+                        ShowUIAlert("Bet Rejected", INSUFFICIENT_FUNDS_MESSAGE);
+                    }
         private void AcceptBetHandler(object o, EventArgs e)
         {
             ShowUIAlert("Bet Accepted", ACCEPT_MESSAGE);
