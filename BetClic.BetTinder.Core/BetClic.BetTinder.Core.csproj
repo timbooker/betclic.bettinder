@@ -37,9 +37,9 @@
     <Compile Include="Entities\Message.cs" />
     <Compile Include="Entities\Bet.cs" />
     <Compile Include="Entities\UserAccount.cs" />
-    <Compile Include="Services\IProposedBetsService.cs" />
+    <Compile Include="Services\IBetsService.cs" />
     <Compile Include="Services\IUserAccountService.cs" />
-    <Compile Include="Services\ProposedBetsService.cs" />
+    <Compile Include="Services\BetsService.cs" />
     <Compile Include="Services\UserAccountService.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\FirstViewModel.cs" />
