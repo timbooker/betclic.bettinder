@@ -60,7 +60,7 @@ namespace BetClic.BetTinder.iOS.Views
         public override void ViewDidLoad()
         {
             _bounds = UIScreen.MainScreen.Bounds;
-            sideHeights = _bounds.Height/7;
+            sideHeights = (_bounds.Height - 20)/7;
 
             NavigationController.SetNavigationBarHidden(true, true);
 
@@ -69,13 +69,13 @@ namespace BetClic.BetTinder.iOS.Views
 
             CreateTopBar();
 
+            CreateBetImagePart();
+            //_nextBet = new UIImageView() { Frame = new RectangleF(100, 100, 175, 175) };
+            //View.AddSubview(_nextBet);
 
-            _nextBet = new UIImageView() { Frame = new RectangleF(100, 100, 175, 175) };
-            View.AddSubview(_nextBet);
-
-            _currentBet = new UIImageView() { Frame = new RectangleF(100, 100, 150, 150) };
-            _currentBet.UserInteractionEnabled = true;
-            View.AddSubview(_currentBet);
+            //_currentBet = new UIImageView() { Frame = new RectangleF(100, 100, 150, 150) };
+            //_currentBet.UserInteractionEnabled = true;
+            //View.AddSubview(_currentBet);
             
             _mvxImageViewLoader = new MvxImageViewLoader(() => _currentBet);
             _mvxNextImageViewLoader = new MvxImageViewLoader(() => _nextBet);
@@ -89,14 +89,14 @@ namespace BetClic.BetTinder.iOS.Views
 
             var uiLabel = new UILabel(new RectangleF(10, 10, 300, 40));
             //View.AddSubview(uiLabel);
-            var uiTextField = new UITextField(new RectangleF(10, 50, 300, 40));
-            View.AddSubview(uiTextField);
+            var betOdds = new UILabel(new RectangleF(10, 50, 300, 40));
+            View.AddSubview(betOdds);
             var userName = new UILabel(new RectangleF(10, 200, 300, 40));
             //View.AddSubview(userName);
 
             var set = this.CreateBindingSet<FirstView, FirstViewModel>();
             set.Bind(uiLabel).To(vm => vm.Bet.HomeTeam);
-            set.Bind(uiTextField).To(vm => vm.Bet.Odds);
+            set.Bind(betOdds).To(vm => vm.Bet.Odds);
             set.Bind(userName).To(vm => vm.UserAccount.UserName);
             set.Bind(_lblUserBalance).To(vm => vm.UserAccount.Balance);
             set.Bind(_btnReject).To(vm => vm.RejectBet);
@@ -109,9 +109,6 @@ namespace BetClic.BetTinder.iOS.Views
             set.Bind(_mvxNextImageViewLoader).To(vm => vm.NextBet.ImageName);
             set.Apply();
 
-
-            var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());
-            View.AddGestureRecognizer(tap);
 
             var tap1 = new UITapGestureRecognizer(() => _uiTextFieldBetAmount.ResignFirstResponder());
             View.AddGestureRecognizer(tap1);
@@ -169,6 +166,22 @@ namespace BetClic.BetTinder.iOS.Views
 
         private void CreateBetImagePart()
         {
+            var yTop = 20+sideHeights;
+            var yBottom = 20 + sideHeights;
+
+            var imageRect = new RectangleF(5, yTop, _bounds.Width - 10, sideHeights*4);
+            _nextBet = new UIImageView() { Frame = imageRect };
+            View.AddSubview(_nextBet);
+
+            // Add OverLay
+            UIView overLayView = new UIView() {BackgroundColor = new UIColor(246, 245, 241, 0.25f)};
+            overLayView.Frame = imageRect;
+            View.AddSubview(overLayView);
+
+            _currentBet = new UIImageView() { Frame = imageRect };
+            _currentBet.UserInteractionEnabled = true;
+            View.AddSubview(_currentBet);
+            
             
         }
 
