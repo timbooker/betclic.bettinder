@@ -149,5 +149,6 @@ namespace BetClic.BetTinder.Core.ViewModels
             NextBet = nextBet;
 
         }
+        
     }
 }

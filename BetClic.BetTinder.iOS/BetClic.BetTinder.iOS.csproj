@@ -126,10 +126,16 @@
     <Reference Include="monotouch" />
   </ItemGroup>
   <ItemGroup>
+    <BundleResource Include="Resources\reject.png" />
+  </ItemGroup>
+  <ItemGroup>
     <BundleResource Include="Resources\pic5.jpg" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\150x150.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\accept.png" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\pic1.jpg" />

@@ -53,12 +53,20 @@ namespace BetClic.BetTinder.iOS.Views
                 View.AddSubview(_nextBet);
             }
 
-            using (var image = UIImage.FromFile("150x150.gif"))
-            {
-                _currentBet = new UIImageView(image) { Frame = new RectangleF(100, 100, 150, 150) };
-                _currentBet.UserInteractionEnabled = true;
-                View.AddSubview(_currentBet);
-            }
+
+            var screenBounds = UIScreen.MainScreen.Bounds;
+            // Load Buttons Part
+            var acceptButton = UIButton.FromType(UIButtonType.Custom);
+            acceptButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
+            //         acceptButton.TouchUpInside += (sender, ae) => { AcceptBet(); };
+            acceptButton.Center = new PointF(50, 450);
+            acceptButton.SizeThatFits(new SizeF(50, 50));
+
+            var rejectButton = UIButton.FromType(UIButtonType.Custom);
+            rejectButton.SetImage(UIImage.FromFile("reject.png"), UIControlState.Normal);
+            //          rejectButton.TouchUpInside += (sender, ae) => { RejectBet(); };
+            rejectButton.Center = new PointF(150, 450);
+            rejectButton.SizeThatFits(new SizeF(50, 50));
 
             HandleMovement();
 
@@ -140,17 +148,11 @@ namespace BetClic.BetTinder.iOS.Views
 
                     if (_currentBet.Center.X > originalImageViewX.X + 50)
                     {
-                        // awkward, but required to break it a little to get the goodness out
-                        var vm = ViewModel as FirstViewModel;
-                        if (vm != null) vm.AcceptBetCommand();
-                        ShowUIAlert("Bet Accepted", ACCEPT_MESSAGE);
+                        AcceptBet();
                     }
                     if (_currentBet.Center.X < originalImageViewX.X - 50)
                     {
-                        // add to rejected bet pile and pop a new one
-                        var vm = ViewModel as FirstViewModel;
-                        if (vm != null) vm.RejectBetCommand();
-                        ShowUIAlert("Bet Rejected", REJECT_MESSAGE);
+                        RejectBet();
                     }
 
                     _currentBet.Layer.BorderColor = new CGColor(0, 0, 0);
@@ -158,6 +160,23 @@ namespace BetClic.BetTinder.iOS.Views
                 }
             });
         }
+
+        private void AcceptBet()
+        {
+                        // awkward, but required to break it a little to get the goodness out
+                        var vm = ViewModel as FirstViewModel;
+                        if (vm != null) vm.AcceptBetCommand();
+                        ShowUIAlert("Bet Accepted", ACCEPT_MESSAGE);
+
+                    }
+
+        private void RejectBet()
+                    {
+                        // add to rejected bet pile and pop a new one
+                        var vm = ViewModel as FirstViewModel;
+                        if (vm != null) vm.RejectBetCommand();
+                        ShowUIAlert("Bet Rejected", REJECT_MESSAGE);
+                    }
 
         /// <summary>
         /// Show UI Alert to UserAccount
