@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using Cirrious.CrossCore;
+using Cirrious.MvvmCross.Binding.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using MonoTouch.CoreGraphics;
 
@@ -26,9 +27,8 @@ namespace BetClic.BetTinder.iOS.Views
     {
         private readonly string ACCEPT_MESSAGE = "Your bet has been Submitted. Good Luck!";
         private readonly string REJECT_MESSAGE = "Bet Rejected";
-        private UIImageView _mainImage;
-        
-        private UIRotationGestureRecognizer _rotationGestureRecognizer;
+        private UIImageView _currentBet;
+        private UIImageView _nextBet;
         private UIPanGestureRecognizer _panGesture;
 
 
@@ -49,11 +49,14 @@ namespace BetClic.BetTinder.iOS.Views
             UITextField uiTextField = new UITextField(new RectangleF(10, 50, 300, 40));
             View.AddSubview(uiTextField);
 
+            UILabel userName = new UILabel(new RectangleF(10, 200, 300, 40));
+            View.AddSubview(userName);
+
+
             using (var image = UIImage.FromFile("150x150.gif"))
             {
-                _mainImage = new UIImageView(image) { Frame = new RectangleF(100, 100, 150, 150) };
-                _mainImage.UserInteractionEnabled = true;
-                View.AddSubview(_mainImage);
+                _nextBet = new UIImageView(image) { Frame = new RectangleF(100, 100, 150, 150) };
+                View.AddSubview(_nextBet);
             }
 
 
@@ -61,94 +64,83 @@ namespace BetClic.BetTinder.iOS.Views
             // Load Buttons Part
             var acceptButton = UIButton.FromType(UIButtonType.Custom);
             acceptButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
-  //         acceptButton.TouchUpInside += (sender, ae) => { AcceptBet(); };
+            //         acceptButton.TouchUpInside += (sender, ae) => { AcceptBet(); };
             acceptButton.Center = new PointF(50, 450);
             acceptButton.SizeThatFits(new SizeF(50, 50));
 
             var rejectButton = UIButton.FromType(UIButtonType.Custom);
             rejectButton.SetImage(UIImage.FromFile("reject.png"), UIControlState.Normal);
-//          rejectButton.TouchUpInside += (sender, ae) => { RejectBet(); };
+            //          rejectButton.TouchUpInside += (sender, ae) => { RejectBet(); };
             rejectButton.Center = new PointF(150, 450);
             rejectButton.SizeThatFits(new SizeF(50, 50));
 
+            HandleMovement();
 
+            _currentBet.AddGestureRecognizer(_panGesture);
 
-            float r = 0;
-            _rotationGestureRecognizer = new UIRotationGestureRecognizer(x =>
-            {
-                if ((x.State == UIGestureRecognizerState.Began || x.State == UIGestureRecognizerState.Changed))
-                {
-                    _mainImage.Transform = CGAffineTransform.MakeRotation(x.Rotation + r);
-                }
-                else if (x.State == UIGestureRecognizerState.Ended)
-                {
-                    r += x.Rotation;
-                }
-            });
+            var set = this.CreateBindingSet<FirstView, FirstViewModel>();
+            set.Bind(uiLabel).To(vm => vm.Bet.Name);
+            set.Bind(uiTextField).To(vm => vm.Bet.Odds);
+            set.Apply();
 
+            var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());
+            View.AddGestureRecognizer(tap);
+        }
+
+        private void HandleMovement()
+        {
             float dx = 0, dy = 0;
-            PointF originalImageViewX = _mainImage.Center;
+            PointF originalImageViewX = _currentBet.Center;
             _panGesture = new UIPanGestureRecognizer(pg =>
             {
                 var p0 = pg.LocationInView(View);
                 if (pg.State == UIGestureRecognizerState.Began || pg.State == UIGestureRecognizerState.Changed)
                 {
                     if (dx == 0)
-                        dx = p0.X - _mainImage.Center.X;
+                        dx = p0.X - _currentBet.Center.X;
 
                     if (dy == 0)
-                        dy = p0.Y - _mainImage.Center.Y;
+                        dy = p0.Y - _currentBet.Center.Y;
 
                     var p1 = new PointF(p0.X - dx, p0.Y - dy);
 
-                    _mainImage.Center = p1;
-                    _mainImage.Layer.BorderWidth = 2.0f;
+                    _currentBet.Center = p1;
+                    _currentBet.Layer.BorderWidth = 2.0f;
+                    //_currentBet.Transform = CGAffineTransform.MakeRotation((_currentBet.Center.X - originalImageViewX.X)/250);
 
-                    _mainImage.Layer.BorderColor = new CGColor(0, 0, 0);
+                    _currentBet.Layer.BorderColor = new CGColor(0, 0, 0);
 
-                    if (_mainImage.Center.X > 250)
+                    if (_currentBet.Center.X > originalImageViewX.X + 50)
                     {
-                        _mainImage.Layer.BorderColor = new CGColor(0, 255, 0);
+                        _currentBet.Layer.BorderColor = new CGColor(0, 255, 0);
                     }
 
-                    if (_mainImage.Center.X < 150)
+                    if (_currentBet.Center.X < originalImageViewX.X - 50)
                     {
-                        _mainImage.Layer.BorderColor = new CGColor(255, 0, 0);
+                        _currentBet.Layer.BorderColor = new CGColor(255, 0, 0);
                     }
                 }
 
                 if (pg.State == UIGestureRecognizerState.Ended)
                 {
                     dx = 0;
+                    var x = 12312;
+                    var y = x;
                     dy = 0;
 
-                    // Right Swipe
-                    if (p0.X > 100)
+                    if (_currentBet.Center.X > originalImageViewX.X + 50)
                     {
                         AcceptBet();
                     }
-
-                    // Left Swipe
-                    if (p0.X < 100)
+                    if (_currentBet.Center.X < originalImageViewX.X - 50)
                     {
                         RejectBet();
                     }
 
-                    _mainImage.Center = originalImageViewX;
+                    _currentBet.Layer.BorderColor = new CGColor(0, 0, 0);
+                    _currentBet.Center = originalImageViewX;
                 }
             });
-
-            _mainImage.AddGestureRecognizer(_panGesture);
-            _mainImage.AddGestureRecognizer(_rotationGestureRecognizer);
-
-            var set = this.CreateBindingSet<FirstView, FirstViewModel>();
-            set.Bind(uiLabel).To(vm => vm.Bet.Name);
-            set.Bind(uiTextField).To(vm => vm.Bet.Odds);
-            set.Bind(acceptButton).To(vm => vm.AcceptBet);
-            set.Bind(rejectButton).To(vm => vm.RejectBet);
-
-            var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());
-            View.AddGestureRecognizer(tap);
         }
 
         private void AcceptBet()
@@ -157,11 +149,12 @@ namespace BetClic.BetTinder.iOS.Views
             var vm = ViewModel as FirstViewModel;
             if (vm != null) vm.AcceptBetCommand();
             ShowUIAlert("Bet Accepted", ACCEPT_MESSAGE);
-            
+
         }
 
         private void RejectBet()
         {
+            // add to rejected bet pile and pop a new one
             var vm = ViewModel as FirstViewModel;
             if (vm != null) vm.RejectBetCommand();
             ShowUIAlert("Bet Rejected", REJECT_MESSAGE);

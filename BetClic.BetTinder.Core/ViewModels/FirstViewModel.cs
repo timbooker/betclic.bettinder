@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Linq;
+using BetClic.BetTinder.Core.Entities;
 using BetClic.BetTinder.Core.Services;
 using Cirrious.MvvmCross.Plugins.Messenger;
 
@@ -25,16 +26,34 @@ namespace BetClic.BetTinder.Core.ViewModels
         /// </summary>
         private MvxCommand myCommand;
 
-        public FirstViewModel(IProposedBetsService proposedBetsService)
+        public FirstViewModel(IProposedBetsService proposedBetsService, IUserAccountService userAccountService)
         {
             _proposedBetsService = proposedBetsService;
+            _userAccountService = userAccountService;
 
             if (_bet == null)
                 _bet = _proposedBetsService.GetNextBet();
 
+            if (_userAccount == null)
+                _userAccount = userAccountService.GetUserAccount();
+            if (_nextBet == null)
+                _nextBet = _proposedBetsService.GetNextBet();
+
         }
 
+        private decimal _betAmount;
+        
+        public decimal BetAmount
+        {
+            get { return _betAmount; }
+        
+            set { _betAmount = value; }
+        }
+
+
         private Bet _bet;
+        private Bet _nextBet;
+
         /// <summary>
         /// Gets or sets my property.
         /// </summary>
@@ -44,6 +63,20 @@ namespace BetClic.BetTinder.Core.ViewModels
             set { this.SetProperty(ref this._bet, value, () => this.Bet); }
         }
 
+        public Bet NextBet
+        {
+            get { return _nextBet; }
+            set { this.SetProperty(ref this._nextBet, value, () => this.NextBet); }
+        }
+        private UserAccount _userAccount;
+
+        public UserAccount User
+        {
+            get { return _userAccount; }
+            set { _userAccount = value; }
+        }
+
+        private IUserAccountService _userAccountService;
 
 
         /// <summary>
@@ -77,11 +110,12 @@ namespace BetClic.BetTinder.Core.ViewModels
         public void AcceptBetCommand()
         {
             // validate bet
-            var bet = _proposedBetsService.GetNextBet();
-            bet.Name += "Accepted Bet";
-
+            var bet = NextBet;
             Bet = bet;
+            _userAccount = _userAccountService.DeductBalance(_userAccount, _betAmount);
 
+            var nextBet = _proposedBetsService.GetNextBet();
+            NextBet = nextBet;
             // mimicks sending to server sort of kinda maybe
             //if (PluginLoader.Instance.SendMessage("dsadjsalkd"))
             //{
@@ -104,15 +138,12 @@ namespace BetClic.BetTinder.Core.ViewModels
         public void RejectBetCommand()
         {
             // validate bet
-            var bet = _proposedBetsService.GetNextBet();
-            bet.Name += "Rejected Bet";
-
+            var bet = NextBet;
             Bet = bet;
-        }
 
-        public void ShowAlertPopupCommand()
-        {
-            /// At the moment not used and done directly in the IOS View   
+            var nextBet = _proposedBetsService.GetNextBet();
+            NextBet = nextBet;
+
         }
         
     }
