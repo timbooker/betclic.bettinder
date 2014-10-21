@@ -4,6 +4,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Binding.ExtensionMethods;
 using Cirrious.MvvmCross.Binding.Touch.Views;
@@ -18,6 +19,7 @@ namespace BetClic.BetTinder.iOS.Views
     using Core.ViewModels;
     using MonoTouch.Foundation;
     using MonoTouch.UIKit;
+    using Cirrious.MvvmCross.Plugins.Messenger;
 
     /// <summary>
     /// Defines the FirstView type.
@@ -40,12 +42,9 @@ namespace BetClic.BetTinder.iOS.Views
         /// </summary>
         public override void ViewDidLoad()
         {
+            WireViewModelEvents();
             this.View = new UIView { BackgroundColor = UIColor.White };
-
-            base.ViewDidLoad();
-
-
-
+            base.ViewDidLoad();            
 
             using (var image = UIImage.FromFile("150x150.gif"))
             {
@@ -55,7 +54,7 @@ namespace BetClic.BetTinder.iOS.Views
 
             using (var image = UIImage.FromFile("150x150.gif"))
             {
-                _currentBet = new UIImageView(image) {Frame = new RectangleF(100, 100, 150, 150)};
+                _currentBet = new UIImageView(image) { Frame = new RectangleF(100, 100, 150, 150) };
                 _currentBet.UserInteractionEnabled = true;
                 View.AddSubview(_currentBet);
             }
@@ -128,6 +127,16 @@ namespace BetClic.BetTinder.iOS.Views
             View.AddGestureRecognizer(tap);
         }
 
+        /// <summary>
+        /// Wire View Model Events
+        /// </summary>
+        private void WireViewModelEvents()
+        {
+            var vm = (FirstViewModel) this.DataContext;
+            vm.OnBetAccepted += (sender, args) => { AcceptBetHandler(sender, args); };
+            vm.OnBetRejected += (sender, args) => { RejectedBetHandler(sender, args); };
+        }
+
         private void HandleMovement()
         {
             float dx = 0, dy = 0;
@@ -186,20 +195,27 @@ namespace BetClic.BetTinder.iOS.Views
 
         private void AcceptBet()
         {
-                        // awkward, but required to break it a little to get the goodness out
-                        var vm = ViewModel as FirstViewModel;
-                        if (vm != null) vm.AcceptBetCommand();
-                        ShowUIAlert("Bet Accepted", ACCEPT_MESSAGE);
-
-                    }
+            // awkward, but required to break it a little to get the goodness out
+            var vm = ViewModel as FirstViewModel;
+            if (vm != null) vm.AcceptBetCommand();
+        }
 
         private void RejectBet()
-                    {
-                        // add to rejected bet pile and pop a new one
-                        var vm = ViewModel as FirstViewModel;
-                        if (vm != null) vm.RejectBetCommand();
-                        ShowUIAlert("Bet Rejected", REJECT_MESSAGE);
-                    }
+        {
+            // add to rejected bet pile and pop a new one
+            var vm = ViewModel as FirstViewModel;
+            if (vm != null) vm.RejectBetCommand();
+        }
+
+        private void RejectedBetHandler(object o, EventArgs e)
+        {
+            ShowUIAlert("Bet Rejected", REJECT_MESSAGE);            
+        }
+
+        private void AcceptBetHandler(object o, EventArgs e)
+        {
+            ShowUIAlert("Bet Accepted", ACCEPT_MESSAGE);
+        }
 
         /// <summary>
         /// Show UI Alert to UserAccount
