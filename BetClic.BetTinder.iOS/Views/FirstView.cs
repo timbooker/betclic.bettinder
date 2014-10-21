@@ -94,7 +94,7 @@ namespace BetClic.BetTinder.iOS.Views
             View.AddSubview(userName);
 
             var set = this.CreateBindingSet<FirstView, FirstViewModel>();
-            set.Bind(uiLabel).To(vm => vm.Bet.Name);
+            set.Bind(uiLabel).To(vm => vm.Bet.HomeTeam);
             set.Bind(uiTextField).To(vm => vm.Bet.Odds);
             set.Bind(userName).To(vm => vm.UserAccount.UserName);
             set.Bind(_lblUserBalance).To(vm => vm.UserAccount.Balance);
