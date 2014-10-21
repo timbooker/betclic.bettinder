@@ -47,7 +47,6 @@ namespace BetClic.BetTinder.iOS.Views
             UITextField uiTextField = new UITextField(new RectangleF(10, 50, 300, 40));
             View.AddSubview(uiTextField);
 
-
             using (var image = UIImage.FromFile("150x150.gif"))
             {
                 _mainImage = new UIImageView(image) { Frame = new RectangleF(100, 100, 150, 150) };
@@ -85,6 +84,7 @@ namespace BetClic.BetTinder.iOS.Views
 
                     _mainImage.Center = p1;
                     _mainImage.Layer.BorderWidth = 2.0f;
+                    _mainImage.Transform = CGAffineTransform.MakeRotation((_mainImage.Center.X - originalImageViewX.X) / 250);
 
                     _mainImage.Layer.BorderColor = new CGColor(0, 0, 0);
 
@@ -106,14 +106,14 @@ namespace BetClic.BetTinder.iOS.Views
                     var y = x;
                     dy = 0;
 
-                    if (p0.X > 100)
+                    if (_mainImage.Center.X > originalImageViewX.X + 50)
                     {
                         // awkward, but required to break it a little to get the goodness out
                         var vm = ViewModel as FirstViewModel;
                         if (vm != null) vm.AcceptBetCommand();
                         
                     }
-                    if (p0.X < 100)
+                    if (_mainImage.Center.X < originalImageViewX.X - 50)
                     {
                         // add to rejected bet pile and pop a new one
                         var vm = ViewModel as FirstViewModel;

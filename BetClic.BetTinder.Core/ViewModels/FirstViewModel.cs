@@ -35,6 +35,8 @@ namespace BetClic.BetTinder.Core.ViewModels
         }
 
         private Bet _bet;
+        private Bet _nextBet;
+
         /// <summary>
         /// Gets or sets my property.
         /// </summary>
@@ -44,6 +46,11 @@ namespace BetClic.BetTinder.Core.ViewModels
             set { this.SetProperty(ref this._bet, value, () => this.Bet); }
         }
 
+        public Bet NextBet
+        {
+            get { return _nextBet; }
+            set { this.SetProperty(ref this._nextBet, value, () => this.NextBet); }
+        }
 
 
         /// <summary>
@@ -73,11 +80,11 @@ namespace BetClic.BetTinder.Core.ViewModels
         public void AcceptBetCommand()
         {
             // validate bet
-            var bet = _proposedBetsService.GetNextBet();
-            bet.Name += "Accepted Bet";
-
+            var bet = NextBet;
             Bet = bet;
 
+            var nextBet = _proposedBetsService.GetNextBet();
+            NextBet = nextBet;
             // mimicks sending to server sort of kinda maybe
             //if (PluginLoader.Instance.SendMessage("dsadjsalkd"))
             //{
@@ -97,10 +104,12 @@ namespace BetClic.BetTinder.Core.ViewModels
         public void RejectBetCommand()
         {
             // validate bet
-            var bet = _proposedBetsService.GetNextBet();
-            bet.Name += "Rejected Bet";
-
+            var bet = NextBet;
             Bet = bet;
+
+            var nextBet = _proposedBetsService.GetNextBet();
+            NextBet = nextBet;
+
         }
     }
 }
