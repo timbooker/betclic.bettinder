@@ -21,7 +21,7 @@ namespace BetClic.BetTinder.Core.Services
                 // update to use home / away teams (two properties)
                 Name = Guid.NewGuid().ToString().Substring(0, 6),
                 Odds = new Random().NextDouble(), // make 2 d.p.
-                ImageName = "http://lorempixel.com/200/200/sports", // get from placeholder website directly (http://somephwebsite/football/etc)
+                ImageName = string.Format("http://lorempixel.com/200/200/sports?x={0}", new Random().Next()),// get from placeholder website directly (http://somephwebsite/football/etc)
                 PreviousResults = GetHistoricalEvents() // pass in current bet so u can get better data.
             };
         }

@@ -27,7 +27,7 @@ namespace BetClic.BetTinder.iOS.Views
     [Register("FirstView")]
     public class FirstView : BaseView
     {
-        
+
 
         private readonly string ACCEPT_MESSAGE = "Your bet has been Submitted. Good Luck!";
         private readonly string INSUFFICIENT_FUNDS_MESSAGE = "Woopsie.. You do not have sufficient funnds.";
@@ -38,6 +38,8 @@ namespace BetClic.BetTinder.iOS.Views
         private UITextField _uiTextFieldBetAmount;
         private UIImageView _playerIcon;
         private RectangleF _bounds;
+        private MvxImageViewLoader _mvxImageViewLoader;
+        private MvxImageViewLoader _mvxNextImageViewLoader;
 
         /// <summary>
         /// Views the did load.
@@ -56,21 +58,16 @@ namespace BetClic.BetTinder.iOS.Views
 
             CreateTopBar();
 
+            _nextBet = new UIImageView() { Frame = new RectangleF(100, 100, 175, 175) };
+            View.AddSubview(_nextBet);
 
             _currentBet = new UIImageView() { Frame = new RectangleF(100, 100, 150, 150) };
             _currentBet.UserInteractionEnabled = true;
-            
-            
-            _uiTextFieldBetAmount = new UITextField(new RectangleF(10, 320, 300, 40));
-            using (var image = UIImage.FromFile("pic2.jpg"))
-            {
-                _nextBet = new UIImageView(image) { Frame = new RectangleF(100, 100, 175, 175) };
-                View.AddSubview(_nextBet);
-            } 
-            
-            var mvxImageViewLoader = new MvxImageViewLoader(() => _currentBet);
             View.AddSubview(_currentBet);
-            
+
+            _mvxImageViewLoader = new MvxImageViewLoader(() => _currentBet);
+            _mvxNextImageViewLoader = new MvxImageViewLoader(() => _nextBet);
+
             // Load Buttons Part
             var acceptButton = UIButton.FromType(UIButtonType.Custom);
             acceptButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
@@ -95,26 +92,26 @@ namespace BetClic.BetTinder.iOS.Views
 
             View.AddSubview(rejectButton);
 
-
+            _uiTextFieldBetAmount = new UITextField(new RectangleF(10, 320, 300, 40));
             _uiTextFieldBetAmount.KeyboardType = UIKeyboardType.NumberPad;
             View.AddSubview(_uiTextFieldBetAmount);
 
             var plusButton = UIButton.FromType(UIButtonType.Custom);
             plusButton.SetImage(UIImage.FromFile("accept.png"), UIControlState.Normal);
             plusButton.Frame = new RectangleF(
-                    50,
-                    320,
-                    buttonWidth,
-                    buttonHeight);
+                50,
+                320,
+                buttonWidth,
+                buttonHeight);
             View.AddSubview(plusButton);
 
             var minusButton = UIButton.FromType(UIButtonType.Custom);
             minusButton.SetImage(UIImage.FromFile("reject.png"), UIControlState.Normal);
             minusButton.Frame = new RectangleF(
-                     90,
-                     320,
-                     buttonWidth,
-                     buttonHeight);
+                90,
+                320,
+                buttonWidth,
+                buttonHeight);
             View.AddSubview(minusButton);
 
             HandleMovement();
@@ -140,8 +137,10 @@ namespace BetClic.BetTinder.iOS.Views
             set.Bind(plusButton).To(vm => vm.IncrementBet);
             set.Bind(minusButton).To(vm => vm.DecrementBet);
             set.Bind(_uiTextFieldBetAmount).To(vm => vm.BetAmount);
-            set.Bind(mvxImageViewLoader).For(x => x.ImageUrl).To(vm => vm.Bet.ImageName);
+            set.Bind(_mvxImageViewLoader).To(vm => vm.Bet.ImageName);
+            set.Bind(_mvxNextImageViewLoader).To(vm => vm.NextBet.ImageName);
             set.Apply();
+
 
             var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());
             View.AddGestureRecognizer(tap);
@@ -152,8 +151,8 @@ namespace BetClic.BetTinder.iOS.Views
 
         private void CreateTopBar()
         {
-            var sideWidths = _bounds.Width/7;
-            var sideHeights = _bounds.Height/7;
+            var sideWidths = _bounds.Width / 7;
+            var sideHeights = _bounds.Height / 7;
 
             // View.BackgroundColor = new UIColor(new CGColor("Gray"));
             using (var image = UIImage.FromFile("PlayerIcon.png"))
@@ -235,27 +234,27 @@ namespace BetClic.BetTinder.iOS.Views
 
         private void AcceptBet()
         {
-                        // awkward, but required to break it a little to get the goodness out
-                        var vm = ViewModel as FirstViewModel;
-                        if (vm != null) vm.AcceptBetCommand();
-                    }
+            // awkward, but required to break it a little to get the goodness out
+            var vm = ViewModel as FirstViewModel;
+            if (vm != null) vm.AcceptBetCommand();
+        }
 
         private void RejectBet()
-                    {
-                        // add to rejected bet pile and pop a new one
-                        var vm = ViewModel as FirstViewModel;
-                        if (vm != null) vm.RejectBetCommand();
+        {
+            // add to rejected bet pile and pop a new one
+            var vm = ViewModel as FirstViewModel;
+            if (vm != null) vm.RejectBetCommand();
         }
 
         private void RejectedBetHandler(object o, EventArgs e)
         {
-                        ShowUIAlert("Bet Rejected", REJECT_MESSAGE);
-                    }
+            ShowUIAlert("Bet Rejected", REJECT_MESSAGE);
+        }
 
         private void InsufficientFundsHandler(object o, EventArgs e)
         {
-                        ShowUIAlert("Bet Rejected", INSUFFICIENT_FUNDS_MESSAGE);
-                    }
+            ShowUIAlert("Bet Rejected", INSUFFICIENT_FUNDS_MESSAGE);
+        }
         private void AcceptBetHandler(object o, EventArgs e)
         {
             ShowUIAlert("Bet Accepted", ACCEPT_MESSAGE);
