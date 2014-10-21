@@ -120,12 +120,13 @@ namespace BetClic.BetTinder.Core.ViewModels
 
         public void IncrementBetTotal()
         {
-            BetAmount += 5;
+            BetAmount += 1;
         }
 
         public void DecrementBetTotal()
         {
-            BetAmount -= 5;
+            if(BetAmount > 0)
+                BetAmount -= 1;
         }
 
         /// <summary>
