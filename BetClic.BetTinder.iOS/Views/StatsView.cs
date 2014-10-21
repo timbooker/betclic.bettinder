@@ -17,18 +17,19 @@ namespace BetClic.BetTinder.iOS.Views
         }
 
         private RectangleF _bounds;
+        private UITableView _tv;
 
         public override void ViewDidLoad()
         {
             _bounds = UIScreen.MainScreen.Bounds;
             var sideHeights = _bounds.Height/7;
-
             NavigationController.SetNavigationBarHidden(false, true);
 
             this.View = new UIView { BackgroundColor = UIColor.Red };
             base.ViewDidLoad();
-
-            var source = new MvxStandardTableViewSource(TableView, "HomeTeam;AwayTeam;HomeTeamScore;AwayTeamScore");
+            _tv = new UITableView(UIScreen.MainScreen.Bounds);
+            TableView = _tv;
+            var source = new MvxStandardTableViewSource(TableView, "TitleText Description");
             TableView.Source = source;
 
             var set = this.CreateBindingSet<StatsView, StatsViewModel>();
