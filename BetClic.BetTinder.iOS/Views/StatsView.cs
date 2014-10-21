@@ -29,7 +29,7 @@ namespace BetClic.BetTinder.iOS.Views
             base.ViewDidLoad();
             _tv = new UITableView(UIScreen.MainScreen.Bounds);
             TableView = _tv;
-            var source = new MvxStandardTableViewSource(TableView, "HomeTeam;AwayTeam;HomeTeamScore;AwayTeamScore");
+            var source = new MvxStandardTableViewSource(TableView, "TitleText Description");
             TableView.Source = source;
 
             var set = this.CreateBindingSet<StatsView, StatsViewModel>();
