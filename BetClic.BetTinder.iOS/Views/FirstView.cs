@@ -54,6 +54,7 @@ namespace BetClic.BetTinder.iOS.Views
         private float sideHeights;
         private UIView _overLayView;
         private UIView _betDetails;
+        private UILabel _numberOfBetsLabel;
 
         /// <summary>
         /// Views the did load.
@@ -113,6 +114,7 @@ namespace BetClic.BetTinder.iOS.Views
             set.Bind(_mvxNextImageViewLoader).To(vm => vm.NextBet.ImageName);
             set.Bind(_betName).To(vm => vm.Bet.Description);
             set.Bind(_betOdds).To(vm => vm.Bet.Odds);
+            set.Bind(_numberOfBetsLabel).To(vm => vm.UserAccount.PreviousBets.Count);
             set.Apply();
 
 
@@ -166,7 +168,13 @@ namespace BetClic.BetTinder.iOS.Views
                 {
                     Frame = new RectangleF(sideWidths * 5.5f, yTop, sideWidths * 1.5f, sideHeights)
                 };
+                _numberOfBetsLabel = new UILabel();
+                _numberOfBetsLabel.TextColor = UIColor.White;
+                _numberOfBetsLabel.Font = UIFont.FromName("Arial-BoldMT", 13f); 
+                _numberOfBetsLabel.Frame = new RectangleF(sideWidths*6.4f, 5, sideWidths*1.5f, sideHeights);
+                
                 View.AddSubview(_betsList);
+                View.AddSubview(_numberOfBetsLabel);
             }
         }
 
@@ -175,7 +183,7 @@ namespace BetClic.BetTinder.iOS.Views
             var yTop = 20 + sideHeights;
             var yBottom = 20 + sideHeights;
 
-            var imageRect = new RectangleF(5, yTop, _bounds.Width - 10, sideHeights * 5);
+            var imageRect = new RectangleF(_bounds.Width / 10, yTop + _bounds.Height / 18, _bounds.Width - 80, (sideHeights * 5) - 70);
             _nextBet = new UIImageView() { Frame = imageRect };
             View.AddSubview(_nextBet);
 
@@ -192,7 +200,7 @@ namespace BetClic.BetTinder.iOS.Views
             var detailsTop = (sideHeights * 3.3f) ;
 
             _betDetails = new UIView() { BackgroundColor = new UIColor(0, 0, 0, 0.5f) };
-            _betDetails.Frame = new RectangleF(5, detailsTop, _bounds.Width - 10, sideHeights);
+            _betDetails.Frame = new RectangleF(5, detailsTop - 120, _bounds.Width - 90, sideHeights);
             _betName = new UILabel();
             _betName.TextColor = UIColor.White;
             _betName.Frame = new RectangleF(5, 2, 300, 15);
@@ -204,13 +212,14 @@ namespace BetClic.BetTinder.iOS.Views
             _betDetails.AddSubview(_betOdds);
 
             _currentBet.Layer.BorderColor = new CGColor(255, 255, 255);
-            _currentBet.Layer.BorderWidth = 5f;
+            _currentBet.Layer.BorderWidth = 8f;
+            _currentBet.Layer.ShadowColor = new CGColor(255, 0, 0);
             _nextBet.Layer.BorderColor = new CGColor(220, 220, 220);
-            _nextBet.Layer.BorderWidth = 5f;
+            _nextBet.Layer.BorderWidth = 8f;
 
             //_currentBetView.AddSubview(_betDetails);
             _currentBet.AddSubview(_betDetails);
-            
+            _currentBet.Transform = CGAffineTransform.MakeRotation((float)0.1);
 
             //View.AddSubview(_currentBetView);
             View.AddSubview(_currentBet);
@@ -261,7 +270,7 @@ namespace BetClic.BetTinder.iOS.Views
 
             // Bet Amount Part
 
-            // Split Bet Part Height in 5 pieces. Arrows = 1 piece each, BetAmount = 2 pieces, 0.5 space
+            // Split Bet Part Height in 5 pieces. Arrows = 1 piece each, BetAmount = 25 pieces, 0.5 space
             var betPartHeight = (float)sideHeights / 5;
 
             // Leave some space from 
@@ -283,7 +292,7 @@ namespace BetClic.BetTinder.iOS.Views
 
             // Bet Amount textbox
             _uiTextFieldBetAmount =
-                new UITextField(new RectangleF(betPartStartX, yTop, betPartWidth, betPartHeight * 1.5f));
+                new UITextField(new RectangleF(betPartStartX + 10, yTop, betPartWidth, betPartHeight * 1.5f));
             _uiTextFieldBetAmount.KeyboardType = UIKeyboardType.DecimalPad;
 
             View.AddSubview(_uiTextFieldBetAmount);

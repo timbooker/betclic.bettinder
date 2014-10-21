@@ -139,7 +139,7 @@ namespace BetClic.BetTinder.Core.ViewModels
             {
                 var bet = NextBet;
                 Bet = bet;
-                var user = _userAccountService.DeductBalance(_userAccount, _betAmount);
+                var user = _userAccountService.DeductBalance(_userAccount, _betAmount, bet);
                 UserAccount = user;
 
                 var nextBet = _betsService.GetNextBet();

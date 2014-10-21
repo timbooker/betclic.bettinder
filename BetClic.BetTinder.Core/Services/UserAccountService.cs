@@ -26,13 +26,16 @@ namespace BetClic.BetTinder.Core.Services
             return user;
         }
 
-        public UserAccount DeductBalance(UserAccount user, decimal balanceToDeduct)
+        public UserAccount DeductBalance(UserAccount user, decimal balanceToDeduct, Bet bet)
         {
             user.Balance -= balanceToDeduct;
+            user.PreviousBets.Add(bet);
+            
             return new UserAccount()
             {
                 UserName = user.UserName,
                 Balance = user.Balance,
+                PreviousBets = user.PreviousBets,
             };  
         }
 

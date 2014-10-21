@@ -9,11 +9,15 @@ namespace BetClic.BetTinder.Core.Entities
 {
     public class UserAccount
     {
+        public UserAccount()
+        {
+            PreviousBets = new List<Bet>();
+        }
         public string UserName { get; set; }
 
         public decimal Balance { get; set; }
 
-        public IEnumerable<Bet> PreviousBets { get; set; }
+        public IList<Bet> PreviousBets { get; set; }
 
     }
 }

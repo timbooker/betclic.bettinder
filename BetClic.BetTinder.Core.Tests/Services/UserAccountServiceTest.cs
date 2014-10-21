@@ -39,7 +39,7 @@ namespace BetClic.BetTinder.Core.Tests.Services
         {
             var userAccoutService = new UserAccountService();
             var user = userAccoutService.GetUserAccount();
-            var result = userAccoutService.DeductBalance(user, (decimal)10);
+            var result = userAccoutService.DeductBalance(user, (decimal)10, new Bet());
 
             Assert.That(result.UserName, Is.Not.Empty);
 

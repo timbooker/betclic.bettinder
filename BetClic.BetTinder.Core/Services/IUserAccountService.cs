@@ -11,7 +11,7 @@ namespace BetClic.BetTinder.Core.Services
     {
         decimal GetBalance(UserAccount user);
         Entities.UserAccount GetUserAccount();
-        UserAccount DeductBalance(UserAccount user, decimal balanceToDeduct);
+        UserAccount DeductBalance(UserAccount user, decimal balanceToDeduct, Bet bet);
         UserAccount IncreaseBalance(UserAccount user, decimal balanceToIncrease);
     }
 }
