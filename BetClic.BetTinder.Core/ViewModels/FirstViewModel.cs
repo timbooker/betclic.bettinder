@@ -4,6 +4,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Linq;
 using System.Runtime.Versioning;
 using BetClic.BetTinder.Core.Entities;
@@ -21,7 +22,8 @@ namespace BetClic.BetTinder.Core.ViewModels
     public class FirstViewModel : BaseViewModel
     {
         private readonly IProposedBetsService _proposedBetsService;
-
+        public EventHandler OnBetAccepted;
+        public EventHandler OnBetRejected;
 
 
         public FirstViewModel(IProposedBetsService proposedBetsService, IUserAccountService userAccountService)
@@ -118,12 +120,19 @@ namespace BetClic.BetTinder.Core.ViewModels
 
                 var nextBet = _proposedBetsService.GetNextBet();
                 NextBet = nextBet;
+
+            if (this.OnBetAccepted != null)
+            {
+                this.OnBetAccepted(this, null);
+            }
+
                 message =  "";
             }
             else
             {
                 message = INSUFFICIENT_MESSAGE;
             }
+
             // mimicks sending to server sort of kinda maybe
             //if (PluginLoader.Instance.SendMessage("dsadjsalkd"))
             //{
@@ -151,6 +160,11 @@ namespace BetClic.BetTinder.Core.ViewModels
 
             var nextBet = _proposedBetsService.GetNextBet();
             NextBet = nextBet;
+
+            if (this.OnBetRejected != null)
+            {
+                this.OnBetRejected(this, null);
+            }
 
         }
         
