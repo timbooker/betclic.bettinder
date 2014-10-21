@@ -182,13 +182,14 @@ namespace BetClic.BetTinder.iOS.Views
             // Add OverLay
             _overLayView = new UIView() { BackgroundColor = new UIColor(0, 0, 0, 0.8f) };
             _overLayView.Frame = imageRect;
+            
             View.AddSubview(_overLayView);
 
             _currentBet = new UIImageView() { Frame = imageRect };
             _currentBet.UserInteractionEnabled = true;
 
             // Add Bet Info Part
-            var detailsTop = (sideHeights * 3);
+            var detailsTop = (sideHeights * 3.3f) ;
 
             _betDetails = new UIView() { BackgroundColor = new UIColor(0, 0, 0, 0.5f) };
             _betDetails.Frame = new RectangleF(5, detailsTop, _bounds.Width - 10, sideHeights);
@@ -202,9 +203,14 @@ namespace BetClic.BetTinder.iOS.Views
             _betOdds.TextColor = UIColor.White;
             _betDetails.AddSubview(_betOdds);
 
+            _currentBet.Layer.BorderColor = new CGColor(255, 255, 255);
+            _currentBet.Layer.BorderWidth = 5f;
+            _nextBet.Layer.BorderColor = new CGColor(220, 220, 220);
+            _nextBet.Layer.BorderWidth = 5f;
 
             //_currentBetView.AddSubview(_betDetails);
             _currentBet.AddSubview(_betDetails);
+            
 
             //View.AddSubview(_currentBetView);
             View.AddSubview(_currentBet);
@@ -324,7 +330,6 @@ namespace BetClic.BetTinder.iOS.Views
                     var p1 = new PointF(p0.X - dx, p0.Y - dy);
 
                     _currentBet.Center = p1;
-                    _currentBet.Layer.BorderWidth = 2.0f;
                     //_currentBet.Transform = CGAffineTransform.MakeRotation((_currentBet.Center.X - originalImageViewX.X)/250);
 
                     _currentBet.Layer.BorderColor = new CGColor(0, 0, 0);
@@ -356,7 +361,7 @@ namespace BetClic.BetTinder.iOS.Views
                         RejectBet();
                     }
 
-                    _currentBet.Layer.BorderColor = new CGColor(0, 0, 0);
+                    _currentBet.Layer.BorderColor = new CGColor(255, 255, 255);
                     _currentBet.Center = originalImageViewX;
                 }
             });
