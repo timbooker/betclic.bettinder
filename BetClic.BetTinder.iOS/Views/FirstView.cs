@@ -45,6 +45,8 @@ namespace BetClic.BetTinder.iOS.Views
         private UIButton _btnIncreaseBet;
         private UIButton _btnDecreaseBet;
         private RectangleF _bounds;
+        private MvxImageViewLoader _mvxImageViewLoader;
+        private MvxImageViewLoader _mvxNextImageViewLoader;
 
         private UILabel _lblUserBalance;
         private float sideHeights;
@@ -59,7 +61,7 @@ namespace BetClic.BetTinder.iOS.Views
         {
             _bounds = UIScreen.MainScreen.Bounds;
             sideHeights = _bounds.Height/7;
-  
+
             NavigationController.SetNavigationBarHidden(true, true);
 
             this.View = new UIView { BackgroundColor = UIColor.Gray };
@@ -67,19 +69,15 @@ namespace BetClic.BetTinder.iOS.Views
 
             CreateTopBar();
 
+            _nextBet = new UIImageView() { Frame = new RectangleF(100, 100, 175, 175) };
+            View.AddSubview(_nextBet);
 
             _currentBet = new UIImageView() { Frame = new RectangleF(100, 100, 150, 150) };
             _currentBet.UserInteractionEnabled = true;
-            
-            
-            using (var image = UIImage.FromFile("pic2.jpg"))
-            {
-                _nextBet = new UIImageView(image) { Frame = new RectangleF(100, 100, 175, 175) };
-                View.AddSubview(_nextBet);
-            } 
-            
-            var mvxImageViewLoader = new MvxImageViewLoader(() => _currentBet);
             View.AddSubview(_currentBet);
+            
+            _mvxImageViewLoader = new MvxImageViewLoader(() => _currentBet);
+            _mvxNextImageViewLoader = new MvxImageViewLoader(() => _nextBet);
             
             // Load Buttons Part
             CreateBottomPart();
@@ -105,8 +103,10 @@ namespace BetClic.BetTinder.iOS.Views
             set.Bind(_btnIncreaseBet).To(vm => vm.IncrementBet);
             set.Bind(_btnDecreaseBet).To(vm => vm.DecrementBet);
             set.Bind(_uiTextFieldBetAmount).To(vm => vm.BetAmount);
-            set.Bind(mvxImageViewLoader).For(x => x.ImageUrl).To(vm => vm.Bet.ImageName);
+            set.Bind(_mvxImageViewLoader).To(vm => vm.Bet.ImageName);
+            set.Bind(_mvxNextImageViewLoader).To(vm => vm.NextBet.ImageName);
             set.Apply();
+
 
             var tap = new UITapGestureRecognizer(() => uiTextField.ResignFirstResponder());
             View.AddGestureRecognizer(tap);
