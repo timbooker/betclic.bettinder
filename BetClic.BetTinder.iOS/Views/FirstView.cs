@@ -87,17 +87,17 @@ namespace BetClic.BetTinder.iOS.Views
             _currentBet.AddGestureRecognizer(_panGesture);
 
             var uiLabel = new UILabel(new RectangleF(10, 10, 300, 40));
-            View.AddSubview(uiLabel);
+            //View.AddSubview(uiLabel);
             var uiTextField = new UITextField(new RectangleF(10, 50, 300, 40));
             View.AddSubview(uiTextField);
             var userName = new UILabel(new RectangleF(10, 200, 300, 40));
-            View.AddSubview(userName);
+            //View.AddSubview(userName);
 
             var set = this.CreateBindingSet<FirstView, FirstViewModel>();
             set.Bind(uiLabel).To(vm => vm.Bet.HomeTeam);
             set.Bind(uiTextField).To(vm => vm.Bet.Odds);
             set.Bind(userName).To(vm => vm.UserAccount.UserName);
-            set.Bind(_lblUserBalance).To(vm => vm.UserAccount.Balance);
+            set.Bind(_lblUserBalance).To(vm => vm.UserAccount.UserBalance);
             set.Bind(_btnReject).To(vm => vm.RejectBet);
             set.Bind(_btnAccept).To(vm => vm.AcceptBet);
             set.Bind(_btnIncreaseBet).To(vm => vm.IncrementBet);
@@ -139,6 +139,8 @@ namespace BetClic.BetTinder.iOS.Views
 
             // Add User Balance
             _lblUserBalance= new UILabel(new RectangleF(0, yTop+ (sideHeights / 2), sideWidths, (sideHeights/ 2)));
+            _lblUserBalance.Font = UIFont.FromName(_lblUserBalance.Font.Name, 9f);
+            
             View.AddSubview(_lblUserBalance);
 
             // Logo
@@ -146,7 +148,7 @@ namespace BetClic.BetTinder.iOS.Views
             {
                 _logo = new UIImageView(image)
                 {
-                    Frame = new RectangleF(sideWidths, yTop, sideWidths*5, sideHeights),
+                    Frame = new RectangleF(sideWidths, yTop, (sideWidths*4.5f), sideHeights),
                 };
                 View.AddSubview(_logo);
             }
@@ -156,7 +158,7 @@ namespace BetClic.BetTinder.iOS.Views
             {
                 _betsList = new UIImageView(image)
                 {
-                    Frame = new RectangleF(sideWidths*6, yTop, sideWidths, sideHeights)
+                    Frame = new RectangleF(sideWidths*5.5f, yTop, sideWidths*1.5f, sideHeights)
                 };
                 View.AddSubview(_betsList);
             }
@@ -171,6 +173,11 @@ namespace BetClic.BetTinder.iOS.Views
             var sideWidths = _bounds.Width / 8;
 
             float yTop = sideHeights*6;
+
+            // Add Background
+            var uiView = new UIView { BackgroundColor = UIColor.FromRGB(246, 245, 241) };
+            uiView.Frame = new RectangleF(0,yTop, _bounds.Width, sideHeights);
+            View.AddSubview(uiView);
 
             // Add Reject Button
             using (var image = UIImage.FromFile("BtnReject.png"))

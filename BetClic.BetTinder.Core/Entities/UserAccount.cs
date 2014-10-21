@@ -12,6 +12,11 @@ namespace BetClic.BetTinder.Core.Entities
 
         public decimal Balance { get; set; }
 
+        public string UserBalance
+        {
+            get { return string.Format("£ {0}", this.Balance); }
+        }
+
 
     }
 }
