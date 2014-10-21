@@ -85,6 +85,7 @@
     <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="Views\BaseView.cs" />
     <Compile Include="Views\FirstView.cs" />
+    <Compile Include="Views\StatsView.cs" />
     <None Include="app.config" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />

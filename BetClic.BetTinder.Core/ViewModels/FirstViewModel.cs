@@ -96,6 +96,7 @@ namespace BetClic.BetTinder.Core.ViewModels
         private ICommand _rejectCommand;
         private ICommand _incrementBetTotalCommand;
         private ICommand _decrementBetCommand;
+        private ICommand _goToStatsCommand;
 
         /// <summary>
         /// Reject Bet Command
@@ -110,6 +111,12 @@ namespace BetClic.BetTinder.Core.ViewModels
 
         public ICommand IncrementBet { get { return this._incrementBetTotalCommand ?? (this._incrementBetTotalCommand = new MvxCommand(IncrementBetTotal)); } }
         public ICommand DecrementBet { get { return this._decrementBetCommand ?? (this._decrementBetCommand = new MvxCommand(DecrementBetTotal)); } }
+        public ICommand GoToStats { get { return this._goToStatsCommand ?? (this._goToStatsCommand = new MvxCommand(GoToStatsScreen)); } }
+
+        private void GoToStatsScreen()
+        {
+            this.ShowViewModel<StatsViewModel>(Bet);
+        }
 
         public void IncrementBetTotal()
         {

@@ -64,7 +64,7 @@ namespace BetClic.BetTinder.iOS.Views
 
             NavigationController.SetNavigationBarHidden(true, true);
 
-            this.View = new UIView { BackgroundColor = UIColor.Gray };
+            this.View = new UIView { BackgroundColor = new UIColor(246, 245, 241, 0.5f)};
             base.ViewDidLoad();
 
             CreateTopBar();
@@ -102,6 +102,7 @@ namespace BetClic.BetTinder.iOS.Views
             set.Bind(_btnAccept).To(vm => vm.AcceptBet);
             set.Bind(_btnIncreaseBet).To(vm => vm.IncrementBet);
             set.Bind(_btnDecreaseBet).To(vm => vm.DecrementBet);
+            set.Bind(_btnStats).To(vm => vm.GoToStats);
             set.Bind(_uiTextFieldBetAmount).To(vm => vm.BetAmount);
             set.Bind(_mvxImageViewLoader).To(vm => vm.Bet.ImageName);
             set.Bind(_mvxNextImageViewLoader).To(vm => vm.NextBet.ImageName);
@@ -131,7 +132,7 @@ namespace BetClic.BetTinder.iOS.Views
             {
                 _playerIcon = new UIImageView(image)
                 {
-                    Frame = new RectangleF(0, yTop, sideWidths, sideHeights / 2),
+                    Frame = new RectangleF(0, yTop, sideWidths, sideHeights),
                 };
                 View.AddSubview(_playerIcon);
             }

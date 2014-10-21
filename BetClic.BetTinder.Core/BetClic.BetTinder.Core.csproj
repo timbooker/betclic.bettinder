@@ -43,6 +43,7 @@
     <Compile Include="Services\UserAccountService.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\FirstViewModel.cs" />
+    <Compile Include="ViewModels\StatsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
