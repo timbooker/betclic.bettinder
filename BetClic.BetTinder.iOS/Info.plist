@@ -13,7 +13,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>MinimumOSVersion</key>
-	<string>7.0</string>
+	<string></string>
 	<key>CFBundleDisplayName</key>
 	<string>BetClic.BetTinder.iOS</string>
 	<key>CFBundleIdentifier</key>
