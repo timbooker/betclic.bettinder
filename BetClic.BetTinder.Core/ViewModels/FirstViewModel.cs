@@ -14,6 +14,7 @@ using BetClic.BetTinder.Core.Services;
 using Cirrious.MvvmCross.Plugins.Messenger;
 using System.Windows.Input;
 using Cirrious.MvvmCross.ViewModels;
+using Newtonsoft.Json;
 
 
 namespace BetClic.BetTinder.Core.ViewModels
@@ -97,6 +98,7 @@ namespace BetClic.BetTinder.Core.ViewModels
         private ICommand _incrementBetTotalCommand;
         private ICommand _decrementBetCommand;
         private ICommand _goToStatsCommand;
+        private ICommand _goToPreviousBetsCommand;
 
         /// <summary>
         /// Reject Bet Command
@@ -112,10 +114,17 @@ namespace BetClic.BetTinder.Core.ViewModels
         public ICommand IncrementBet { get { return this._incrementBetTotalCommand ?? (this._incrementBetTotalCommand = new MvxCommand(IncrementBetTotal)); } }
         public ICommand DecrementBet { get { return this._decrementBetCommand ?? (this._decrementBetCommand = new MvxCommand(DecrementBetTotal)); } }
         public ICommand GoToStats { get { return this._goToStatsCommand ?? (this._goToStatsCommand = new MvxCommand(GoToStatsScreen)); } }
+        public ICommand GoToPreviousBets { get { return this._goToPreviousBetsCommand ?? (this._goToPreviousBetsCommand = new MvxCommand(GoToPreviousBetsScreen)); } }
+
+        private void GoToPreviousBetsScreen()
+        {
+            this.ShowViewModel<PreviousBetsViewModel>(
+                new {previousBets = JsonConvert.SerializeObject(UserAccount.PreviousBets)});
+        }
 
         private void GoToStatsScreen()
         {
-            this.ShowViewModel<StatsViewModel>(Bet.PreviousResults);
+            this.ShowViewModel<StatsViewModel>(new {previousResults = JsonConvert.SerializeObject(Bet.PreviousResults)});
         }
 
         public void IncrementBetTotal()

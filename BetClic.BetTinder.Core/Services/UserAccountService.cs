@@ -28,6 +28,8 @@ namespace BetClic.BetTinder.Core.Services
 
         public UserAccount DeductBalance(UserAccount user, decimal balanceToDeduct, Bet bet)
         {
+            if (user.Balance < balanceToDeduct)
+                throw new Exception("Nice try, you have put request for a bet greater than the balance.");
             user.Balance -= balanceToDeduct;
             user.PreviousBets.Add(bet);
             

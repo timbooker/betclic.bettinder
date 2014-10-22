@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BetClic.BetTinder.Core.Entities;
+using BetClic.BetTinder.Core.Extensions;
 using Cirrious.MvvmCross.Platform;
 
 namespace BetClic.BetTinder.Core.Services
@@ -38,11 +39,11 @@ namespace BetClic.BetTinder.Core.Services
             var betDesc = (BetMarkets.BetOn) rnd.Next(1, 2);
             return new Bet()
             {
-                HomeTeam = homeEnum.ToString(),
-                AwayTeam = awayEnum.ToString(),
+                HomeTeam = homeEnum.ToString().PascalToSentence(),
+                AwayTeam = awayEnum.ToString().PascalToSentence(),
                 Odds = RandomNumberBetween(),
-                BetType = bet.ToString(),
-                BetTypeDescription = betDesc.ToString(),
+                BetType = bet.ToString().PascalToSentence(),
+                BetTypeDescription = betDesc.ToString().PascalToSentence(),
                 Description = GetDescription(homeEnum, awayEnum),
                 ImageName = string.Format("http://lorempixel.com/200/200/sports?x={0}", new Random().Next()),// get from placeholder website directly (http://somephwebsite/football/etc)
                 PreviousResults = GetHistoricalEvents(homeEnum, awayEnum)
@@ -57,7 +58,7 @@ namespace BetClic.BetTinder.Core.Services
             //if (random == 1)
             //    res = awayTeam;
 
-            return string.Format("{0} - {1}",homeTeam, awayTeam);
+            return string.Format("{0} - {1}", homeTeam.ToString().PascalToSentence(), awayTeam.ToString().PascalToSentence());
         }
 
         public List<Bet> GetAcceptedBets()
@@ -79,8 +80,8 @@ namespace BetClic.BetTinder.Core.Services
             {
                 list.Add(new PreviousResults()
                 {
-                    HomeTeam = homeTeam.ToString(),
-                    AwayTeam = awayTeam.ToString(),
+                    HomeTeam = homeTeam.ToString().PascalToSentence(),
+                    AwayTeam = awayTeam.ToString().PascalToSentence(),
                     AwayTeamScore = rnd.Next(0, 10),
                     HomeTeamScore = rnd.Next(0, 10),
                     MatchDate = new DateTime(rnd.Next(1960, 2014), rnd.Next(1,12), rnd.Next(1,28))

@@ -242,5 +242,8 @@
   <ItemGroup>
     <BundleResource Include="Resources\Icon-Small-40%402x.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\1x1.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
 </Project>

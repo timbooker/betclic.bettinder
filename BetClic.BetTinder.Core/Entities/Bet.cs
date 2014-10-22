@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using BetClic.BetTinder.Core.Extensions;
 
 namespace BetClic.BetTinder.Core.Services
 {
@@ -27,7 +28,7 @@ namespace BetClic.BetTinder.Core.Services
 
         public string Description
         {
-            get { return "Date : " + MatchDate + HomeTeam + "vs " + AwayTeam + ", Score : " + HomeTeamScore + " - " + AwayTeamScore; }
+            get { return MatchDate.ToString("ddd dd") + " " + HomeTeam.PascalToSentence() + " vs " + AwayTeam.PascalToSentence() + ", " + HomeTeamScore + " - " + AwayTeamScore; }
         }
     }
 }
